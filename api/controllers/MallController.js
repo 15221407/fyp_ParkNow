@@ -61,5 +61,18 @@ update: function (req, res) {
     },
 
 
+    detail: function (req, res) {
+        Mall.findOne(req.params.id).exec(function (err, model) {
+            if (model == null) {
+                return res.send("No such person!");
+            }
+            else {
+                return res.view('mall/detail', { 'mall': model });
+            }
+        });
+
+},
+
+
 };
 

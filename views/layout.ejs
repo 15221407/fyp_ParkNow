@@ -32,7 +32,37 @@
     <link rel="stylesheet" href="/styles/importer.css">
     <!--STYLES END-->
   </head>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">ParkNow CMS</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+            <a class="nav-item nav-link <%=req.path=='/User/showQpon' ? 'active':''%>" hhref="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-item nav-link <%=req.path=='/User/showQpon' ? 'active':''%>" h href="/mall/index">Manage Mall</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-item nav-link <%=req.path=='/User/showQpon' ? 'active':''%>" h href="/token/index">Manage Coupon</a>
+          </li>
+        </ul>
+      </div>
 
+      <ul class="navbar-nav navbar-right ml-auto">
+          <% if (req.session.role != 'admin'  && req.session.role != 'user' ) { %>
+            <a class="nav-link" href="/user/login">Login</a>
+            <% } else { %>
+              <span class="nav-link navbar-text">
+                Hi,
+                <%= req.session.username %>! (
+                  <a onclick="Logout();">logout</a>)</span>
+              <% } %>
+        </ul>
+
+    </nav>
   <body>
     <div class="container">
       <br><br>

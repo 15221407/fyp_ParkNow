@@ -12,14 +12,36 @@
 module.exports.bootstrap = function(cb) {
 
 
-  var users = [
-    { "username": "admin", "password": "123", "id": 101 },
-    { "username": "user1", "password": "123", "id": 102 }
-];
 
-users.forEach(function (user) {
-    User.create(user).exec(function (err, model) { });
-});
+      // Load the bcrypt module
+  var bcrypt = require('bcrypt');
+
+  // Generate a salt
+  var salt = bcrypt.genSaltSync(10);
+
+  
+    var users = [
+        { "username": "admin", "password": "123", "id": 101, "point":50 },
+        { "username": "user1", "password": "123", "id": 102, "point":12 }
+    ];
+ 
+
+  users.forEach(function (user) {
+
+      user.password = bcrypt.hashSync(user.password, salt);
+
+      User.create(user).exec(function (err, model) {
+
+          if ( err ) {
+              console.log(err);
+              return;
+          }
+
+        model.save();
+      });
+
+  });
+
 
 
 

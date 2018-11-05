@@ -13,28 +13,32 @@ module.exports = {
             return res.view('user/login');
         else {
             User.findOne({ username: req.body.username }).exec(function (err, user) {
-    
+
                 if (user == null)
                     return res.send("No such user");
-    
-                if (user.password != req.body.password)
+
+                // Load the bcrypt module
+                var bcrypt = require('bcrypt');
+
+                // Generate a salt
+                var salt = bcrypt.genSaltSync(10);
+
+                if (!bcrypt.compareSync(req.body.password, user.password))
                     return res.send("Wrong Password");
-    
+
                 console.log("The session id " + req.session.id + " is going to be destroyed.");
-    
+
                 req.session.regenerate(function (err) {
-    
-                    console.log("The new session id is " + req.session.id + ".");
-    
                     req.session.username = req.body.username;
-    
-                    return res.json(req.session);
-    
+                    req.session.uid = user.id;
+                    req.session.role = user.role;
+                    console.log("The new session id is " + req.session.uid + ".");
+                    return res.send("login successfully");
+
                 });
             });
         }
     },
-
 
     logout: function(req, res) {
 

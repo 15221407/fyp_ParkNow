@@ -1,0 +1,85 @@
+<style>
+        table,
+        td,
+        th {
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+    
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+    
+        th,
+        td {
+            padding: 15px;
+        }
+    </style>
+    <div class="container">
+        <!--detail.ejs-->
+            <div class="row">
+                <div class="col-xs-4 col-sm-5">
+                    <img class="img-thumbnail" src="<%=mall.image%>" style="width:525px;height:375px;">
+                </div>
+                <div class="col-xs-4 col-sm-7">
+                    <table>
+                        <tr>
+                            <th>
+                     <b>
+                                <%= mall.name%>
+                         </b>
+                            </th>
+                        </tr>
+
+                        <tr>
+                            <td>
+                         <b>
+                             District:
+                            </b>
+                            <%= mall.district%>     
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>
+                                    Parking fee per hour:
+                                </b>
+                               $<%= mall.fee%>
+                            </td>
+                        </tr>
+    
+                        <tr>
+                            <td>
+                                <b>
+                                    Address:</b>
+                                <%= mall.validFrom%>
+                            </td>
+                        </tr>
+
+                        <tr>
+                                <td>
+                                    <b>
+                                        Map:</b>
+                                    <%= mall.lat%> ,  <%= mall.long%>
+                                </td>
+                            </tr>
+
+
+                        <tr>
+                            <td>
+                                <b>
+                                    Introduction:</b>
+                                <%= mall.detail%>
+                            </td>
+                        </tr>
+                
+                    </table>
+                    <br>
+                </div>
+            </div>
+            <tr> <button class="btn btn-primary"  onclick="javascript:location.href='/mall/index'" > Go to Mall List</button></tr>
+    </div>
+
+
+    
