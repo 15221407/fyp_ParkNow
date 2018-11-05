@@ -1,12 +1,24 @@
 <!--index.ejs-->
 <div class="container">
+    <td><button class="btn btn-primary"  onclick="javascript:location.href='/token/create'" > Back to Admin Homepage</button> </td>
+    <tr> <button class="btn btn-primary"  onclick="javascript:location.href='/token/create'" > Create A New Coupon</button></tr>
+
     <table class="table table-striped">
         <tr>
             <td>
                 <a class="nav-link">
                     <b>ID</b>
-            </td>
-            </a>
+                </a>
+                </td>
+          
+
+            <td>
+                    <a class="nav-link">
+                        <b>Mall</b>
+                    </a>
+                </td>
+
+
             <td>
                 <a class="nav-link">
                     <b>Type</b>
@@ -27,7 +39,7 @@
                     <b>Valid To</b>
                 </a>
             </td>
-            <td></td>
+           
             <td></td>
             <td></td>
             <% tokens.forEach( function(model) { %>
@@ -37,13 +49,20 @@
                             <%= model.id %>
                         </a>
                     </td>
+
                     <td>
-                        <a class="nav-item nav-link" href="http://localhost:1337/token/detail/<%= model.id %>">
+                            <a class="nav-link">
+                                <%= model.mall%>
+                            </a>
+                        </td>
+
+                    <td>
+                            <a class="nav-link">
                             <%= model.type%>
                         </a>
                     </td>
                     <td>
-                        <a class="nav-link">
+                            <a class="nav-item nav-link" href="http://localhost:1337/token/detail/<%= model.id %>">
                             <%= model.name%> 
                         </a>
                     </td>
@@ -60,6 +79,12 @@
                     <td>
                         <a class="nav-item nav-link" href="update/<%= model.id %>">Update</a>
                     </td>
+
+                   
                 
                     <% }); %>
 </div>
+
+<script>
+      
+</script>

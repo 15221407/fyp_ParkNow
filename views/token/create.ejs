@@ -11,17 +11,28 @@
         </div>
 
     <div class="form-group">
-        <label>Coupon Name</label>
-        <input type="text" class="form-control" name="Token[name]">
-    </div>
+            <label>Shopping Mall</label>
+        <select required  class="form-control" name="Token[mall]">
+            <option value="">Please select one:</option>    
+            <% malls.forEach( function(model) { %>
+                <option value=<%= model.name%>><%= model.name%></option>
+                <% }); %>
+            </select>
+        </div>
   
+    <div class="form-group">
+            <label>Coupon Name</label>
+            <input type="text" class="form-control" name="Token[name]">
+        </div>
+        
+
     <div class="form-group">
         <label>Points</label>
         <input type="text" class="form-control" name="Token[point]">
     </div>
 
     <div class="form-group">
-        <label>Valid Date Till: </label>
+        <label>Valid Date From: </label>
                         <div class="input-group date" data-provide="datepicker" data-date-start-date="+0d">
                             <input type="text" class="form-control" name="Token[validFrom]" max: "01/01/2100">
                             <div class="input-group-addon">

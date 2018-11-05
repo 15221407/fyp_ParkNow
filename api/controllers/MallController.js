@@ -18,6 +18,48 @@ create: function (req, res) {
     }
 },
 
+// json function
+json: function (req, res) {
+   Mall.find().exec(function (err, malls) {
+        return res.json(malls);
+    });
+},
+
+// index function
+index: function (req, res) {
+    Mall.find().exec(function (err, malls) {
+        return res.view('mall/index', { 'malls':malls});
+    });
+},
+
+
+
+// update function
+update: function (req, res) {
+    if (req.method == "GET") {
+        Mall.findOne(req.params.id).exec(function (err, model) {
+            if (model == null)
+                return res.send("No such person!");
+            else
+                return res.view('mall/update', { 'mall': model });
+        });
+    } else {
+        Mall.findOne(req.params.id).exec(function (err, model) {
+            model.name = req.body.Mall.name;
+            model.district = req.body.Mall.district;
+            model.address = req.body.Mall.address;
+            model.contact = req.body.Mall.contact;
+            model.long = req.body.Mall.long;
+            model.lat = req.body.Mall.lat;
+            model.fee = req.body.Mall.fee;
+            model.poster = req.body.Mall.poster;
+            model.detail = req.body.Mall.detail;
+            model.save();
+            return res.send("Record updated");
+        });
+    }
+    },
+
 
 };
 

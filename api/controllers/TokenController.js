@@ -15,10 +15,13 @@ create: function (req, res) {
             return res.send("Successfully Created!");
         });
     } else {
-        return res.view('token/create');
+        // return res.view('token/create');
+        Mall.find().exec(function (err, malls) {
+            return res.view('token/create', { 'malls':malls});
+        });
+
     }
 },
-
 
 // json function
 json: function (req, res) {
