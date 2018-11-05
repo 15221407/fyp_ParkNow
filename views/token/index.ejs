@@ -1,6 +1,6 @@
 <!--index.ejs-->
 <div class="container">
-    <td><button class="btn btn-primary"  onclick="javascript:location.href='/token/create'" > Back to Admin Homepage</button> </td>
+    <td><button class="btn btn-primary"  onclick="javascript:location.href='/user/home'" > Back to Admin Homepage</button> </td>
     <tr> <button class="btn btn-primary"  onclick="javascript:location.href='/token/create'" > Create A New Coupon</button></tr>
 
     <table class="table table-striped">
@@ -41,7 +41,7 @@
             </td>
            
             <td></td>
-            <td></td>
+        
             <% tokens.forEach( function(model) { %>
                 <tr>
                     <td>
@@ -77,7 +77,7 @@
                         </a>
                     </td>
                     <td>
-                        <a class="nav-item nav-link" href="update/<%= model.id %>">Update</a>
+                        <a class="nav-item nav-link" href="edit/<%= model.id %>">Edit</a>
                     </td>
 
                    

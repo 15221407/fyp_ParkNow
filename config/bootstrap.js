@@ -11,38 +11,27 @@
 
 module.exports.bootstrap = function(cb) {
 
-
-
-      // Load the bcrypt module
-  var bcrypt = require('bcrypt');
-
-  // Generate a salt
-  var salt = bcrypt.genSaltSync(10);
-
-  
     var users = [
-        { "username": "admin", "password": "123", "id": 101, "point":50 },
+        { "username": "admin", "password": "123", "id": 101, "point":0 },
         { "username": "user1", "password": "123", "id": 102, "point":12 }
     ];
  
+Token.findOne(1).exec(function (err, model) {
 
-  users.forEach(function (user) {
-
-      user.password = bcrypt.hashSync(user.password, salt);
-
-      User.create(user).exec(function (err, model) {
-
-          if ( err ) {
-              console.log(err);
-              return;
-          }
-
-        model.save();
-      });
-
+    if (model == null) {
+  
+        var tokens = [
+            { "type":"oneFree" ,"mall":"New Town Plaza", "name": "One hour free parking coupon","point": 10, "detail":"One hour for free parking", "image":"http://kartrocket-mtp.s3.amazonaws.com/all-stores/image_crafterscornerdemo/data/coupons.gif", "id": 1 },
+            { "type":"threeFree" ,"mall":"apm", "name": "Three hours free parking coupon","point": 30, "detail":"Three hours for free parking", "image":"https://bestgear.me/wp-content/uploads/2017/07/coupons.jpg", "id": 2 }
+        ];
+  
+        tokens.forEach(function (token) {
+            Token.create(token).exec(function (err, model) { });
+        });
+  
+    }
+  
   });
-
-
 
 
 Mall.findOne(635).exec(function (err, model) {
@@ -50,8 +39,8 @@ Mall.findOne(635).exec(function (err, model) {
   if (model == null) {
 
       var malls = [
-          { "name": "Mall A", "age": "23", "id": 635 },
-          { "name": "Kenny Cheng", "age": "22", "id": 637 }
+          { "district":"New Territories" ,"name":"New Town Plaza", "address": "Sha Tin Centre Street, Sha Tin","Contact": "2608 9329","fee":15, "detail":"Welcome to New Town Plaza, the flagship shopping centre of Sun Hung Kai Properties. Located in the heart of Sha Tin, adjacent to Sha Tin station, New Town Plaza offers around 2 million sq. ft. of exceptional shopping, dining and lifestyle facilities. One of the largest developments of its kind in Hong Kong, New Town Plaza comprises Phase I, Phase III and HomeSquare, as well as a second phase housing New Town Tower and the Royal Park Hotel.", "poster" : "http://www.newtownplaza.com.hk/sites/default/files/inline-images/poster.jpg", "id": 635 },
+          { "district":"Kowloon" ,"name":"apm", "address": "NO. 418 Kwun Tong Road, Kwun Tong, Kowloon","Contact": "2267 0883","fee":12, "detail":"This is evident in its determination to develop East Kowloon in recent years with Millennium City phases one through five: the largest shopping and commercial complex in Hong Kong. The name is a combination of am and pm, or day and night, reflecting the innovative late night shopping and Omni lifestyle magazine concept. Retailers will stay open until midnight, restaurants to 2:00am and entertainment spots till dawn.", "poster":"https://www.hkapm.com.hk/cccms/lib/uploads/system/application_20180731_zeeAf.jpg", "id": 637 }
       ];
 
       malls.forEach(function (mall) {

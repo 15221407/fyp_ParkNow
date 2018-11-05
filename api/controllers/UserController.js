@@ -6,6 +6,10 @@
  */
 
 module.exports = {
+
+    home: function (req, res) {
+        return res.view('user/home');
+    },
     
     login: function (req, res) {
 

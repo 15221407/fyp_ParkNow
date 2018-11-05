@@ -35,13 +35,13 @@ index: function (req, res) {
 
 
 // update function
-update: function (req, res) {
+edit: function (req, res) {
     if (req.method == "GET") {
         Mall.findOne(req.params.id).exec(function (err, model) {
             if (model == null)
                 return res.send("No such person!");
             else
-                return res.view('mall/update', { 'mall': model });
+                return res.view('mall/edit', { 'mall': model });
         });
     } else {
         Mall.findOne(req.params.id).exec(function (err, model) {

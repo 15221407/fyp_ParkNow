@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%=typeof title == 'undefined' ? 'New Sails App' : title%></title>
+    <title><%=typeof title == 'undefined' ? 'ParkNow CMS' : title%></title>
 
     <!-- Viewport mobile tag for sensible mobile support -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -33,20 +33,26 @@
     <!--STYLES END-->
   </head>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="#">ParkNow CMS</a>
+      <a class="navbar-brand">ParkNow CMS</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-          <li class="nav-item active">
-            <a class="nav-item nav-link <%=req.path=='/User/showQpon' ? 'active':''%>" hhref="#">Home <span class="sr-only">(current)</span></a>
+          <li class="nav-item">
+            <a class="nav-item nav-link <%=req.path=='/user/home' ? 'active':''%>" href="/user/home">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-item nav-link <%=req.path=='/User/showQpon' ? 'active':''%>" h href="/mall/index">Manage Mall</a>
+            <a class="nav-item nav-link <%=req.path=='/mall/index' ? 'active':''%>" href="/mall/index">Manage Mall</a>
           </li>
           <li class="nav-item">
-            <a class="nav-item nav-link <%=req.path=='/User/showQpon' ? 'active':''%>" h href="/token/index">Manage Coupon</a>
+            <a class="nav-item nav-link <%=req.path=='/token/index' ? 'active':''%>" href="/token/index">Manage Coupon</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-item nav-link <%=req.path=='#' ? 'active':''%>" href="#">Parking Record(Not working)</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-item nav-link <%=req.path=='#' ? 'active':''%>" href="#">Redeem Record(Not working)</a>
           </li>
         </ul>
       </div>

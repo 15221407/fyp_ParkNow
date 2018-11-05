@@ -38,13 +38,13 @@ index: function (req, res) {
 },
 
 // update function
-update: function (req, res) {
+edit: function (req, res) {
     if (req.method == "GET") {
         Token.findOne(req.params.id).exec(function (err, model) {
             if (model == null)
                 return res.send("No such person!");
             else
-                return res.view('token/update', { 'token': model });
+                return res.view('token/edit', { 'token': model });
         });
     } else {
         Token.findOne(req.params.id).exec(function (err, model) {
@@ -56,7 +56,7 @@ update: function (req, res) {
             model.image = req.body.Token.image;
             model.detail = req.body.Token.detail;
             model.save();
-            return res.send("Record updated");
+            return res.send("Record updateds");
         });
     }
     },

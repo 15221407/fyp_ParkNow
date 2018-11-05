@@ -1,6 +1,6 @@
 <!--index.ejs-->
 <div class="container">
-        <td><button class="btn btn-primary"  onclick="javascript:location.href='/mall/create'" > Back to Admin Homepage</button> </td>
+        <td><button class="btn btn-primary"  onclick="javascript:location.href='/user/home'" > Back to Admin Homepage</button> </td>
         <tr> <button class="btn btn-primary"  onclick="javascript:location.href='/mall/create'" > Add A New Shooping Mall</button></tr>
     
         <table class="table table-striped">
@@ -32,7 +32,7 @@
            
                 <td></td>
                 <td></td>
-                <td></td>
+             
                 <% malls.forEach( function(model) { %>
                     <tr>
                         <td>
@@ -48,23 +48,19 @@
                             </td>
     
                         <td>
-                            <a class="nav-item nav-link" href="http://localhost:1337/mall/detail/<%= model.id %>">
+                            <a class="nav-item nav-link" href="detail/<%= model.id %>">
                                 <%= model.name%>
                             </a>
                         </td>
                         <td>
                             <a class="nav-link">
-                                <%= model.fee%> 
+                                $<%= model.fee%> 
                             </a>
                         </td>
                         <td> </td>
+    
                         <td>
-                            <a class="nav-link">
-                                <%= model.validFrom%> 
-                            </a>
-                        </td>
-                        <td>
-                            <a class="nav-item nav-link" href="update/<%= model.id %>">Update</a>
+                            <a class="nav-item nav-link" href="edit/<%= model.id %>">Edit</a>
                         </td>
     
                        
