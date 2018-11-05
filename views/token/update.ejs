@@ -1,0 +1,67 @@
+<html>
+
+<body>
+
+    <div class="container">
+        <form action="/token/update/<%=token.id %>" method="POST" onsubmit="return submitForm(this);">
+            <div class="row">
+                <div class="col-xs-4 col-sm-6">
+                    <div class="form-group">
+                        <label>Type: </label>
+                        <select required type="text" class="form-control" name="Token[type]" value="<%=token.type%>">
+                            <option value="oneFree">One hour free parking</option>
+                            <option value="twoFree">Two hours free parking</option>
+                            <option value="threeFree">Three hours free parking</option>
+                        </select>
+                        <label>Coupon Name: </label>
+                        <input required type="text" class="form-control" name="Token[name]" value="<%=token.name%>">
+                        <label>Point: </label>
+                        <input required type="number" class="form-control" name="Token[point]" value="<%=token.point%>" min="1" max="5000">
+                        <label>Image: </label>
+                        <input required type="text" class="form-control" name="Token[image]" value="<%= token.image%>" pattern="https?://.+" title="Include http://">
+                    </div>
+                </div>
+
+                <div class="col-xs-4 col-sm-6">
+                    <div class="form-group">
+                        <label>Vaild From: </label>
+                        <input required type="number" class="form-control" name="Token[ValidTo]" min="0" value="<%= Token.ValidFrom%>">
+                        <label>Vaild To: </label>
+                        <input required type="number" class="form-control" name="Token[ValidTo]" min="0" value="<%= Token.ValidTo%>">
+                        <label>Details: </label>
+                        <textarea rows="4" class="form-control" name="Token[detail]"><%= token.detail%></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+
+        <script type="text/javascript">
+
+            function submitForm(oFormElement) {
+                var customFormData = "";
+                Object.keys(oFormElement).forEach(function (data) {
+                    customFormData += encodeURI(oFormElement[data].name) + "=" + encodeURI(oFormElement[data].value) + "&";
+                })
+
+                var xhr = new XMLHttpRequest();
+                xhr.onload = function () {
+                    if (xhr.responseText == "updated successfully") {
+                        alert(xhr.responseText);
+                        location.reload(true);
+                    }
+                    else {
+                        alert(xhr.responseText);
+                    }
+                }
+
+                xhr.open(oFormElement.method, oFormElement.action, true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.send(customFormData + "a");
+                return false;
+            }
+        </script>
+    </div>
+</body>
+
+</html>

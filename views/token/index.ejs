@@ -1,6 +1,65 @@
 <!--index.ejs-->
-<table class="table">
-    <% persons.forEach( function(model) { %>
-        <tr><td><%= model.name %></td><td><%= model.age %></td></tr>
-    <% }); %>
-</table>
+<div class="container">
+    <table class="table table-striped">
+        <tr>
+            <td>
+                <a class="nav-link">
+                    <b>ID</b>
+            </td>
+            </a>
+            <td>
+                <a class="nav-link">
+                    <b>Type</b>
+                </a>
+            </td>
+            <td>
+                <a class="nav-link">
+                    <b>Coupon</b>
+                </a>
+            </td>
+            <td>
+                <a class="nav-link">
+                    <b>Valid From</b>
+                </a>
+            </td>
+            <td>
+                <a class="nav-link">
+                    <b>Valid To</b>
+                </a>
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <% tokens.forEach( function(model) { %>
+                <tr>
+                    <td>
+                        <a class="nav-link">
+                            <%= model.id %>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="nav-item nav-link" href="http://localhost:1337/token/detail/<%= model.id %>">
+                            <%= model.type%>
+                        </a>
+                    </td>
+                    <td>
+                        <a class="nav-link">
+                            <%= model.name%> 
+                        </a>
+                    </td>
+                    <td>
+                        <a class="nav-link">
+                            <%= model.validTo%> 
+                        </a>
+                    </td>
+                    <td>
+                        <a class="nav-link">
+                            <%= model.validFrom%> 
+                        </a>
+                    </td>
+                    <td>
+                        <a class="nav-item nav-link" href="update/<%= model.id %>">Update</a>
+                    </td>
+                
+                    <% }); %>
+</div>

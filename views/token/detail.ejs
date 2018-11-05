@@ -1,0 +1,74 @@
+<style>
+    table,
+    td,
+    th {
+        border: 1px solid #ddd;
+        text-align: left;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th,
+    td {
+        padding: 15px;
+    }
+</style>
+<div class="container">
+    <!--detail.ejs-->
+        <div class="row">
+            <div class="col-xs-4 col-sm-5">
+                <img class="img-thumbnail" src="<%=token.image%>" style="width:525px;height:375px;">
+            </div>
+            <div class="col-xs-4 col-sm-7">
+                <table>
+                    <tr>
+                        <th>
+                            <b>
+                                <%= token.name %>
+                            </b>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>
+                                <%= token.type%>
+                            </b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>
+                                Points:
+                            </b>
+                            <%= token.point%>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <b>
+                                Valid From:</b>
+                            <%= token.validFrom%>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>
+                                Valid To:</b>
+                            <%= token.validTo%>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <%= token.detail%>
+                        </td>
+                    </tr>
+
+                </table>
+                <br>
+            </div>
+        </div>
+</div>
