@@ -8,6 +8,7 @@
 module.exports = {
 
         // create function
+    
 create: function (req, res) {
     if (req.method == "POST") {
         Mall.create(req.body.Mall).exec(function (err, model) {

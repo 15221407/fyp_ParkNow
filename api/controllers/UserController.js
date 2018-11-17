@@ -17,28 +17,23 @@ module.exports = {
             return res.view('user/login');
         else {
             User.findOne({ username: req.body.username }).exec(function (err, user) {
-
+    
                 if (user == null)
                     return res.send("No such user");
-
-                // Load the bcrypt module
-                var bcrypt = require('bcrypt');
-
-                // Generate a salt
-                var salt = bcrypt.genSaltSync(10);
-
-                if (!bcrypt.compareSync(req.body.password, user.password))
+    
+                if (user.password != req.body.password)
                     return res.send("Wrong Password");
-
+    
                 console.log("The session id " + req.session.id + " is going to be destroyed.");
-
+    
                 req.session.regenerate(function (err) {
+    
+                    console.log("The new session id is " + req.session.id + ".");
+    
                     req.session.username = req.body.username;
-                    req.session.uid = user.id;
-                    req.session.role = user.role;
-                    console.log("The new session id is " + req.session.uid + ".");
-                    return res.send("login successfully");
-
+    
+                    return res.view('user/home');
+    
                 });
             });
         }
@@ -51,6 +46,18 @@ module.exports = {
         req.session.destroy(function (err) {
             return res.send("Log out successfully.");
         });
+    },
+
+    qrCode: function(req, res) {
+
+        var QRCode = require('qrcode');
+        var datetime = new Date();
+        console.log('date:'+ datetime);
+        QRCode.toDataURL('user:' + req.session.username + ';date:' + datetime, function (err, url) {
+         console.log(url)
+       return res.view('user/qrCode' , {qr: url});
+});
+
     },
 
     

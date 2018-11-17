@@ -31,6 +31,15 @@
                          </b>
                             </th>
                         </tr>
+                        <tr>
+                            <td>
+                         <b>
+                             Contact:
+                            </b>
+                            <%= mall.contact%>     
+                            </td>
+                        </tr>
+
 
                         <tr>
                             <td>
@@ -45,10 +54,20 @@
                                 <b>
                                     Parking fee per hour:
                                 </b>
-                               $<%= mall.fee%>
+                               $<%= mall.spending%> per hour
                             </td>
                         </tr>
     
+                        <tr>
+                            <td>
+                                <b>
+                                    Free parking:
+                                </b>
+                               $<%= mall.parkingFee%>
+                            </td>
+                        </tr>
+    
+
                         <tr>
                             <td>
                                 <b>
@@ -61,9 +80,19 @@
                                 <td>
                                     <b>
                                         Map:</b>
-                                    <%= mall.lat%> ,  <%= mall.long%>
+                                    <%=mall.lat%> ,  <%=mall.long%>
                                 </td>
                             </tr>
+
+
+                        <tr>
+                            <td>
+                                <b>
+                                    Avaliable lots:</b>
+                                <%=mall.lots%>
+                            </td>
+                        </tr>
+
 
 
                         <tr>
