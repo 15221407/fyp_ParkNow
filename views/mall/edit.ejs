@@ -1,0 +1,70 @@
+<html>
+
+<body>
+
+    <div class="container">
+        <form action="/mall/edit/<%=mall.id %>" method="POST" onsubmit="return submitForm(this);">
+            <div class="row">
+                <div class="col-xs-4 col-sm-6">
+                    <div class="form-group">
+            
+                        <label>District: </label>
+                        <select required type="text" class="form-control" name="Mall[district]" value="<%=mall.district%>">
+                                <option value="Kowloon">Kowloon</option>
+                                <option value="HK Island">HK Island</option>
+                                <option value="New Territories">New Territories</option>
+                        </select>
+                        <label>Shopping Mall</label>
+                        <input required type="text" class="form-control" name="Mall[name]" value="<%=mall.name%>">
+                        <label>Address</label>
+                        <input required type="text" class="form-control" name="Mall[address]" value="<%=mall.address%>">
+                        <label>Contact</label>
+                        <input required type="text" class="form-control" name="Mall[contact]" value="<%=mall.contact%>">
+                        <label>poster: </label>
+                        <input required type="text" class="form-control" name="Mall[poster]" value="<%=mall.poster%>" pattern="https?://.+" title="Include http://">
+                    </div>
+                </div>
+
+                <div class="col-xs-4 col-sm-6">
+                    <div class="form-group">
+                        <label>Latitude</label>
+                        <input required type="number" step="any" class="form-control" name="Mall[latitude]" min="0" value="<%= mall.latitude%>">
+                        <label>Longitude: </label>
+                        <input required type="number" step="any" class="form-control" name="Mall[longitude]" min="0" value="<%=mall.longitude%>">
+                        <label>Details: </label>
+                        <textarea rows="4" class="form-control" name="Mall[detail]"><%=mall.detail%></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+
+        <script type="text/javascript">
+
+            function submitForm(oFormElement) {
+                var customFormData = "";
+                Object.keys(oFormElement).forEach(function (data) {
+                    customFormData += encodeURI(oFormElement[data].name) + "=" + encodeURI(oFormElement[data].value) + "&";
+                })
+
+                var xhr = new XMLHttpRequest();
+                xhr.onload = function () {
+                    if (xhr.responseText == "updated successfully") {
+                        alert(xhr.responseText);
+                        location.reload(true);
+                    }
+                    else {
+                        alert(xhr.responseText);
+                    }
+                }
+
+                xhr.open(oFormElement.method, oFormElement.action, true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.send(customFormData + "a");
+                return false;
+            }
+        </script>
+    </div>
+</body>
+
+</html>

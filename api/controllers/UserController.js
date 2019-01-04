@@ -25,13 +25,13 @@ module.exports = {
                     return res.send("Wrong Password");
     
                     console.log("The session id " + req.session.id + " is going to be destroyed.");
-                    console.log("Userid");
-                    req.session.regenerate(function (err) {
-                    console.log("Userid");
-    
-                    req.session.username = req.body.username;
-    
+                    // model.deviceToken = req.body.deviceToken;
+                    // model.save();
 
+                    req.session.regenerate(function (err) {
+                     console.log("The new session id is " + req.session.id + ".");
+                    req.session.username = req.body.username;
+                    req.session.role = user.role;
                     // return res.view('user/home');
                     return res.send("Sign In Sccessfully");
     
@@ -48,6 +48,15 @@ module.exports = {
         });
     },
     
+    getPoint: function (req, res) {
+        User.findOne({ name: req.body.username }).exec(function (err, user) {
+            console.log(req.body.username)
+            // console.log(user.point)
+            // var point = user.point.toString()
+            return res.send("");
+        });
+    },
+
     qrCode: function(req , res) {
 
         User.findOne({ username: req.body.username }).exec(function (err, user) {
@@ -58,8 +67,10 @@ module.exports = {
                 console.log("qrCode")
                 var QRCode = require('qrcode');
                 var datetime = new Date();
-                QRCode.toDataURL('user:' + user.id + ';date:' + datetime, function (err, url) {
+                QRCode.toDataURL(user.id + ';' + datetime, function (err, url) {
                 console.log(url)
+                console.log(user.id)
+                console.log(datetime)
                 // return res.view('user/qrCode' , {qr: url});
                 return res.send(url);
                 });

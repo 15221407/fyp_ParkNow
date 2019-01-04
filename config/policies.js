@@ -19,6 +19,21 @@
 
 module.exports.policies = {
 
+   UserController: {
+  
+   },
+   
+   MallController: {
+    create: 'isAdmin',
+    edit: 'isAdmin',
+    addShop: 'isAdmin'
+   },
+
+   ShopController: {
+    addPoint: 'isShop'
+
+   }
+
   /***************************************************************************
   *                                                                          *
   * Default policy for all controllers and actions (`true` allows public     *

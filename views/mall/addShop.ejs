@@ -1,0 +1,55 @@
+
+<!--create.ejs-->
+<form action="/mall/addShop" method="POST">
+    <div class="row">
+     <div class="col-xs-4 col-sm-6">
+         <div class="form-group">
+                <p><b><label>Add a new shop</label></b></p>
+                <label>Shopping mall</label>
+             <select required  class="form-control" name="Shop[mallId]">
+            <option value="">Please select one:</option>    
+            <% malls.forEach( function(mall) { %>
+                <option value=<%= mall.id%>><%= mall.name%></option>
+                <% }); %>
+            </select>
+      
+            <label>Shop Name</label>
+            <input required type="text" class="form-control" name="Shop[name]">
+    
+        
+        <label>Shop No.</label>
+        <input  required type="text" class="form-control" name="Shop[shopNo]">
+    </div>
+</div>
+
+
+<div class="col-xs-4 col-sm-6">
+    <div class="form-group">
+           <p><b><label>Create a Shop Staff Account</label></b></p>
+            <label>Username</label>
+            <input required type="text" class="form-control" name="User[username]">
+     
+                <label>Password</label>
+                <input required type="text" class="form-control" name="User[password]">
+         
+                    <label>Role</label>
+                    <input required type="text" class="form-control" value="shop" name="User[role]" disabled>
+                </div>
+            
+    
+</div>
+</div>
+<button type="submit" class="btn btn-primary">Submit</button>
+</div>
+
+</form>
+
+
+<script type="text/javascript">
+
+    window.onload = function () {
+        $('#datepicker').datepicker({
+            format: 'mm/dd/yyyy'
+        });
+    }
+    </script>

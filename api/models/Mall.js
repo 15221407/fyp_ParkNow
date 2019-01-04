@@ -9,6 +9,15 @@ module.exports = {
 
   attributes: {
 
+    supervises: {
+      collection: 'shop',
+      via: 'under'
+  },
+
+//   supervises: {
+//     collection: 'carpark',
+//     via: 'under'
+// }
+
   }
 };
-

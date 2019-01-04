@@ -1,0 +1,60 @@
+<html>
+    <head>
+         <form action="/shop/addPoint" method="POST">
+        <titile>QR code Scanner</titile>
+        <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+        </head>
+
+        <body>
+            <p><video id="preview"></video></p>
+            User ID: <p id="userId"></p>
+            QR code generation time: <p id="genTime"> </p>
+
+            <div class="form-group">
+                <div class="form-group">
+                    <label>Consumption</label>
+                    <input type="number" class="form-control" name="Shop[name]" min=1>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+
+            <script>
+
+            let scanner = new Instascan.Scanner(
+            {
+                video: document.getElementById('preview')
+                
+            }
+            );
+
+            scanner.addListener('scan',function(content){
+                alert(content)
+                console.log(content)
+
+            splitContent = function (content) {
+            var string = content.trim().split(";");
+            document.getElementById("userId").innerHTML = string[0];
+            document.getElementById("genTime").innerHTML = string[1];
+
+            };
+
+            splitContent(content);
+          
+ 
+            });
+
+            Instascan.Camera.getCameras().then(cameras => 
+            {                
+                if(cameras.length > 0){
+                    scanner.start(cameras[0])
+                }else{
+                    console.error("No camera")
+                }
+
+            }
+            )
+            
+           
+            </script>
+        </body>
+        </html>

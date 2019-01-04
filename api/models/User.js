@@ -9,6 +9,24 @@ module.exports = {
 
   attributes: {
 
+    username: {
+      type: 'string',
+      unique: true
+    },
+
+    role: {
+      type: 'string',
+      enum: ['admin', 'member', 'shop' , 'visitor'],
+      defaultsTo: 'visitor'
+  },
+
+
+toJSON: function () {
+    var obj = this.toObject();
+    delete obj.password;
+    return obj;
+}
+
   }
 };
 

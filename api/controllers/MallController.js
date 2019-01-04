@@ -33,8 +33,6 @@ index: function (req, res) {
     });
 },
 
-
-
 // update function
 edit: function (req, res) {
     if (req.method == "GET") {
@@ -61,6 +59,15 @@ edit: function (req, res) {
     }
     },
 
+    getLots: function (req, res) {
+            Mall.findOne({ name: req.body.mallName }).exec(function (err, mall) {
+                console.log(req.body.mallName)
+                console.log(mall.lots)
+                var lots = mall.lots.toString()
+                return res.send(lots);
+            });
+        },
+
 
     detail: function (req, res) {
         Mall.findOne(req.params.id).exec(function (err, model) {
@@ -73,6 +80,56 @@ edit: function (req, res) {
         });
 
 },
+
+addShop: function(req, res){
+    if (req.method == "POST") {
+        Shop.create(req.body.Shop).exec(function (err, model) {
+            User.create(req.body.User).exec(function (err, user) {
+            console.log(model.mallId)
+            console.log(model.name)
+            Mall.findOne({ id: model.mallId}).exec(function (err,mall) {
+                        if (mall != null) {
+                            console.log(model.id)
+                            mall.supervises.add(model.id);
+                            model.under.add(model.mallId);
+                            mall.save();
+                            model.save();
+                        } 
+                });
+            return res.send("Successfully Created!");
+           
+        });
+    });
+
+    } else {
+        Mall.find().exec(function (err, malls) {
+            return res.view('mall/addShop', { 'malls':malls});
+        });
+        
+    }
+},
+
+
+showMall: function (req, res) {
+
+    Shop.findOne(req.params.id).populateAll().exec( function (err, model) {
+    
+      return res.json(model);
+    
+    });
+},
+
+showShop: function (req, res) {
+
+    Mall.findOne(req.params.id).populateAll().exec( function (err, model) {
+    
+      return res.json(model);
+    
+    });
+},
+
+
+
 
 
 };
