@@ -29,7 +29,7 @@ json: function (req, res) {
 // index function
 index: function (req, res) {
     Mall.find().exec(function (err, malls) {
-        return res.view('mall/index', { 'malls':malls});
+        return res.view('mall/index', { 'malls':malls });
     });
 },
 
@@ -83,17 +83,21 @@ edit: function (req, res) {
 
 addShop: function(req, res){
     if (req.method == "POST") {
-        Shop.create(req.body.Shop).exec(function (err, model) {
+        Shop.create(req.body.Shop).exec(function (err, shop) {
             User.create(req.body.User).exec(function (err, user) {
-            console.log(model.mallId)
-            console.log(model.name)
-            Mall.findOne({ id: model.mallId}).exec(function (err,mall) {
+            user.role = "shop";
+            shop.uid = user.id;
+            user.save();
+            shop.save();
+            // console.log(model.mallId)
+            // console.log(model.name)
+            Mall.findOne({ id: shop.mallId}).exec(function (err,mall) {
                         if (mall != null) {
-                            console.log(model.id)
-                            mall.supervises.add(model.id);
-                            model.under.add(model.mallId);
+                            // console.log(model.id)
+                            mall.supervises.add(shop.id);
+                            shop.under.add(shop.mallId);
                             mall.save();
-                            model.save();
+                            shop.save();
                         } 
                 });
             return res.send("Successfully Created!");

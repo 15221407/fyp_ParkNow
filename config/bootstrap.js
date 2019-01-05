@@ -12,9 +12,10 @@
 module.exports.bootstrap = function(cb) {
 
     var users = [
-        { "username": "admin", "password": "123456" , "role":"admin", "id": 101 },
-        { "username": "user1", "password": "123456", "role":"member", "deviceToken": "","point": 40 , "id": 102 },
-        { "username": "user2", "password": "123456", "role":"member", "deviceToken": "","point": 30 , "id": 103 },
+        { "username":"admin", "password":"123456", "role":"admin", "id": 101 },
+        { "username":"user1", "password":"123456", "role":"member","point": 40 , "id": 102 },
+        { "username":"user2", "password":"123456", "role":"member","point": 30 , "id": 103 },
+       { "username":"shop1", "password":"123456", "role": "shop", "id": 120}
         // { "username": "shop1", "password": "123456" , role:"shop", "mallName":"apm", "shopName":"759", "id": 105 }
     ];
     
@@ -62,20 +63,35 @@ Mall.findOne(635).exec(function (err, model) {
 
 });
 
-// Shop.findOne(300001).exec(function (err, model) {
+Member.findOne(101).exec(function (err, model) {
 
-//     if (model == null) {
+    if (model == null) {
   
-//         var malls = [
-//             { "mallID":635, "mallName":"New Town Plaza","name": "759", "id": 300001 },
-//         ];
+        var members = [
+            { "username":"user1","point": 40, "uid": 102 , "id": 101 },
+        ];
   
-//         shops.forEach(function (mall) {
-//             Shop.create(shop).exec(function (err, model) { });
-//         });
+       members.forEach(function (member) {
+            Member.create(member).exec(function (err, model) { });
+        });
   
-//     }
-//   });
+    }
+  });
+
+  Shop.findOne(27).exec(function (err, model) {
+
+    if (model == null) {
+  
+        var shops = [
+             {  "mallName": "New Town Plaza" , "name": "qw", "shopNo": "123", "id": 27,"uid": 120}
+        ];
+  
+        shops.forEach(function (shop) {
+            Shop.create(shop).exec(function (err, model) { });
+        });
+  
+    }
+  });
   // It's very important to trigger this callback method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
   cb();

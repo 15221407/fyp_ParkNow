@@ -30,9 +30,12 @@ module.exports = {
 
                     req.session.regenerate(function (err) {
                      console.log("The new session id is " + req.session.id + ".");
+                    
                     req.session.username = req.body.username;
                     req.session.role = user.role;
+                    req.session.uid = user.id;
                     // return res.view('user/home');
+                    // console.log("Role  " + req.session.role  + ".");
                     return res.send("Sign In Sccessfully");
     
                 });
@@ -49,11 +52,11 @@ module.exports = {
     },
     
     getPoint: function (req, res) {
-        User.findOne({ name: req.body.username }).exec(function (err, user) {
-            console.log(req.body.username)
-            // console.log(user.point)
-            // var point = user.point.toString()
-            return res.send("");
+        Member.findOne({ uid : req.session.uid }).exec(function (err, member) {
+            console.log(req.session.uid )
+            console.log(member.point)
+            var point = member.point.toString()
+            return res.send(point);
         });
     },
 

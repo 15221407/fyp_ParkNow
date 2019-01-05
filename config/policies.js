@@ -31,8 +31,11 @@ module.exports.policies = {
 
    ShopController: {
     addPoint: 'isShop'
+   },
 
-   }
+  //  MemberController: {
+  //   getPoint: 'isMember'
+  //  }
 
   /***************************************************************************
   *                                                                          *
