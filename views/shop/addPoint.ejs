@@ -16,26 +16,26 @@
                 <div class="form-group">
 
                         <label>Shopping Mall: </label>
-                        <input type="text" class="form-control" name="PointRecord[mallName]" value="<%=mallName%>">
+                        <input required type="text" class="form-control" name="PointRecord[mallName]" value="<%=mallName%>">
 
                         <label>Shop ID: </label>
-                        <input type="number" class="form-control" name="PointRecord[shopId]" value="<%=shopuid%>">
+                        <input required type="number" class="form-control" name="PointRecord[shopId]" value="<%=shopuid%>">
 
                         <label> ShopName: </label>
-                        <input type="text" class="form-control" name="PointRecord[shopName]" value="<%=shopName%>">
+                        <input required type="text" class="form-control" name="PointRecord[shopName]" value="<%=shopName%>">
 
 
                     <label>User ID: </label>
-                    <input type="number" class="form-control" name="PointRecord[userId]" id="userId">
+                    <input required type="number" class="form-control" name="PointRecord[userId]" id="userId">
                 
                     <label>QR Code Generation time: </label>
-                    <input type="text" class="form-control" name="PointRecord[genTime]" id="genTime">
+                    <input required type="text" class="form-control" name="PointRecord[genTime]" id="genTime">
 
                     <label>Consumption:</label>
-                    <input type="number" class="form-control" name="PointRecord[consumption]" id="consumption" min=1>
+                    <input required type="number" class="form-control" name="PointRecord[consumption]" id="consumption" min=1>
         
                     <label>Point: </label>
-                    <input type="number" class="form-control" name="PointRecord[point]" id="point">
+                    <input required type="number" class="form-control" name="PointRecord[point]" id="point">
                     
                 </div>
                 <button type="submit" class="btn btn-primary">Add point</button>
@@ -52,15 +52,28 @@
 
             scanner.addListener('scan',function(content){
                 // alert(content)
-                console.log(content)
+                // console.log(content)
                 splitContent = function (content) {
                     var string = content.trim().split(";");
-                    document.getElementById("userId").value = string[0] ;
-                    document.getElementById("genTime").value = string[1];
+                    
+                    var genTime = new Date(string[1]).toLocaleString();
+                    var currentTime = new Date().toLocaleString();
+                    var time1 = new Date(genTime);
+                    var time2 = new Date(currentTime);
+                    var  diff = (time2 - time1)/1000 /60 ;
+
+                    if ( diff >= 15 ) {
+                        document.getElementById("userId").value = " " ;
+                        document.getElementById("genTime").value = " ";
+                        alert("Invalid Qr code. Please Refreash.");
+                    }else{
+                        document.getElementById("userId").value = string[0];
+                        document.getElementById("genTime").value = string[1];
+                    }
                 };
                 splitContent(content);
-            });
 
+            });
 
             Instascan.Camera.getCameras().then(cameras => 
             {                
@@ -80,6 +93,7 @@
                 }
             });
 
+            
 
             </script>
         </body>

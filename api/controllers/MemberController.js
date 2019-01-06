@@ -16,11 +16,11 @@ module.exports = {
         });
     },
 
-    showShoppingRecord: function (req, res) {
+ 
 
-        Member.findOne({ uid : req.session.uid }).populateAll().exec( function (err, model) {
-        
-          return res.json(model.has);
+    showShoppingRecord: function (req, res) {
+        PointRecord.find().where({ userId : { contains: req.session.uid }}).exec( function (err,records ) {
+          return res.json(records);
         
         });
     },

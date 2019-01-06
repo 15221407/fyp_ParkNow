@@ -16,12 +16,13 @@ module.exports = {
         }else {
             Shop.findOne( { uid : req.session.uid }).exec(function (err, shop) {
                 PointRecord.create(req.body.PointRecord).exec(function (err, pointRecord) {
+                    // PointRecord.genTime
                     Member.findOne({ uid: pointRecord.userId }).exec(function (err, member) {
                         if (member == null){
                             return res.send("No such user");
                         }
                     member.point = parseInt(pointRecord.point) + parseInt(member.point) ; 
-                    member.has.add(pointRecord.id);
+                    // member.has.add(pointRecord.id);
                     // shop.create.add(pointRecord.id);
                     pointRecord.save();
                     member.save();

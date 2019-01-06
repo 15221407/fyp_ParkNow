@@ -14,6 +14,11 @@ module.exports = {
       unique: true
     },
 
+    password: {
+      type: 'string',
+      unique: false
+    },
+
     role: {
       type: 'string',
       enum: ['admin', 'member', 'shop' , 'visitor'],

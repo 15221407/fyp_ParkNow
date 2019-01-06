@@ -9,10 +9,10 @@ module.exports = {
 
   attributes: {
 
-    belongsTo: {
-      collection: 'member',
-      via: 'has'
-  },
+  //   belongsTo: {
+  //     collection: 'member',
+  //     via: 'has'
+  // },
 
   },
 

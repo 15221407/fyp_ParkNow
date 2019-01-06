@@ -66,8 +66,7 @@ module.exports = {
     
             if (user == null)
                 return res.send("No such user");
-
-                console.log("qrCode")
+                
                 var QRCode = require('qrcode');
                 var datetime = new Date();
                 QRCode.toDataURL(user.id + ';' + datetime, function (err, url) {

@@ -9,10 +9,10 @@ module.exports = {
 
   attributes: {
 
-    has: {
-      collection: 'pointRecord',
-      via: 'belongsTo'
-  },
+  //   has: {
+  //     collection: 'pointRecord',
+  //     via: 'belongsTo'
+  // },
 
   },
 
