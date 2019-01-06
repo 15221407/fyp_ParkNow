@@ -85,17 +85,14 @@ addShop: function(req, res){
     if (req.method == "POST") {
         Shop.create(req.body.Shop).exec(function (err, shop) {
             User.create(req.body.User).exec(function (err, user) {
-            user.role = "shop";
             shop.uid = user.id;
             user.save();
             shop.save();
-            // console.log(model.mallId)
-            // console.log(model.name)
-            Mall.findOne({ id: shop.mallId}).exec(function (err,mall) {
+            Mall.findOne({ name: shop.mallName}).exec(function (err,mall) {
                         if (mall != null) {
                             // console.log(model.id)
-                            mall.supervises.add(shop.id);
-                            shop.under.add(shop.mallId);
+                            // mall.supervises.add(shop.id);
+                            // shop.under.add(mall.id);
                             mall.save();
                             shop.save();
                         } 
@@ -104,7 +101,6 @@ addShop: function(req, res){
            
         });
     });
-
     } else {
         Mall.find().exec(function (err, malls) {
             return res.view('mall/addShop', { 'malls':malls});

@@ -1,5 +1,5 @@
 /**
- * Member.js
+ * Car.js
  *
  * @description :: A model definition.  Represents a database table/collection/etc.
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
@@ -9,31 +9,21 @@ module.exports = {
 
   attributes: {
 
-    username: {
-      type: 'string',
-      unique: true
-    },
-
-    point: {
-      type: 'integer'
-    },
-
-    uid: {
+  userId: {
       type: 'integer',
       unique: true
   },
 
   licensePlate: {
-    type: 'string'
-}
+      type: 'string',
+      unique: true
+  },
 
-
-  //   has: {
-  //     collection: 'pointRecord',
-  //     via: 'belongsTo'
-  // },
-
-  
+  state: {
+      type: 'string',
+      enum: ['entry', 'leave', 'parking'],
+      defaultsTo: 'leave'
+  }
 
   },
 

@@ -6,10 +6,10 @@
          <div class="form-group">
                 <p><b><label>Add a new shop</label></b></p>
                 <label>Shopping mall</label>
-             <select required  class="form-control" name="Shop[mallId]">
+             <select required  class="form-control" name="Shop[mallName]">
             <option value="">Please select one:</option>    
             <% malls.forEach( function(mall) { %>
-                <option value=<%= mall.id%>><%= mall.name%></option>
+                <option value=<%= mall.name%>><%= mall.name%></option>
                 <% }); %>
             </select>
       
@@ -33,7 +33,7 @@
                 <input required type="text" class="form-control" name="User[password]">
          
                     <label>Role</label>
-                    <input required type="text" class="form-control" value="shop" name="User[role]" disabled>
+                    <input required type="text" class="form-control" value="shop" name="User[role]">
                 </div>
             
     

@@ -9,6 +9,53 @@ module.exports = {
 
   attributes: {
 
+    district: {
+      type: 'string',
+      enum: ['New Territories', 'Kowloon', 'Hong Kong Island' ]
+  },
+
+    name: {
+      type: 'string',
+      unique: true
+    },
+
+    address: {
+      type: 'string'
+    },
+
+    parkingFee: {
+      type: 'integer'
+    },
+
+    spending: {
+      type: 'integer'
+    },
+
+    detail: {
+      type: 'string'
+    },
+
+
+    contact: {
+      type: 'string'
+    },
+    
+    lots: {
+      type: 'integer'
+    },
+
+    latitude: {
+      type: 'decimal'
+    },
+
+    longitude: {
+      type: 'decimal'
+    },
+
+    poster: {
+      type: 'string'
+    },
+    
     supervises: {
       collection: 'shop',
       via: 'under'

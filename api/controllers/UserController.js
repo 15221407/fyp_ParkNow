@@ -8,6 +8,7 @@
 module.exports = {
 
     home: function (req, res) {
+        console.log(req.session.username);
         return res.view('user/home');
     },
     
@@ -25,18 +26,18 @@ module.exports = {
                     return res.send("Wrong Password");
     
                     console.log("The session id " + req.session.id + " is going to be destroyed.");
-                    // model.deviceToken = req.body.deviceToken;
-                    // model.save();
-
+    
                     req.session.regenerate(function (err) {
                      console.log("The new session id is " + req.session.id + ".");
                     
                     req.session.username = req.body.username;
                     req.session.role = user.role;
                     req.session.uid = user.id;
-                    // return res.view('user/home');
-                    // console.log("Role  " + req.session.role  + ".");
-                    return res.send("Sign In Sccessfully");
+                    if(user.role != "member"){
+                        return res.view('user/home');
+                    }
+                    else{
+                    return res.send("Sign In Sccessfully");}
     
                 });
             });

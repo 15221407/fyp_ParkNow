@@ -9,6 +9,22 @@ module.exports = {
 
   attributes: {
 
+    mallName: {
+      type: 'string',
+  },
+
+    name: {
+      type: 'string'
+    },
+
+    shopNo: {
+      type: 'string'
+    },
+
+    uid: {
+      type: 'integer'
+    },
+    
     under: {
       collection: 'mall',
       via: 'supervises'

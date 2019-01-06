@@ -9,8 +9,8 @@ module.exports = {
 
     getPoint: function (req, res) {
         Member.findOne({ uid : req.session.uid }).exec(function (err, member) {
-            console.log(req.session.uid )
-            console.log(member.point)
+            console.log(req.session.uid)
+            console.log("point: " + member.point) 
             var point = member.point.toString()
             return res.send(point);
         });

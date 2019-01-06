@@ -15,8 +15,7 @@ module.exports = {
     },
 
     password: {
-      type: 'string',
-      unique: false
+      type: 'string'
     },
 
     role: {

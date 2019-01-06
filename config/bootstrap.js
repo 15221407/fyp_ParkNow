@@ -12,11 +12,10 @@
 module.exports.bootstrap = function(cb) {
 
     var users = [
-        { "username":"admin", "password":"123456", "role":"admin", "id": 101 },
-        { "username":"user1", "password":"123456", "role":"member","point": 40 , "id": 102 },
-        { "username":"user2", "password":"123456", "role":"member","point": 30 , "id": 103 },
-       { "username":"shop1", "password":"123456", "role": "shop", "id": 120}
-        // { "username": "shop1", "password": "123456" , role:"shop", "mallName":"apm", "shopName":"759", "id": 105 }
+    //     { "username":"admin", "password":"123456", "role":"admin", "id": 101 },
+    //     { "username":"user1", "password":"123456", "role":"member", "id": 102 },
+    //     { "username":"user2", "password":"123456", "role":"member", "id": 103 },
+    //    { "username":"shop1", "password":"123456", "role": "shop", "id": 120}
     ];
     
     users.forEach(function (user) {
@@ -52,7 +51,7 @@ Mall.findOne(635).exec(function (err, model) {
 
       var malls = [
           { "district":"New Territories" ,"name":"New Town Plaza", "address": "Sha Tin Centre Street, Sha Tin","contact": "2608 9329","parkingFee":15,"spending":200,"detail":"Welcome to New Town Plaza, the flagship shopping centre of Sun Hung Kai Properties. Located in the heart of Sha Tin, adjacent to Sha Tin station, New Town Plaza offers around 2 million sq. ft. of exceptional shopping, dining and lifestyle facilities. One of the largest developments of its kind in Hong Kong, New Town Plaza comprises Phase I, Phase III and HomeSquare, as well as a second phase housing New Town Tower and the Royal Park Hotel.", "poster" : "http://www.newtownplaza.com.hk/sites/default/files/inline-images/poster.jpg", "lots":150,"latitude": 22.3814592, "longitude": 114.1889307,"id": 635 },
-          { "district":"Kowloon" ,"name":"apm", "address": "NO. 418 Kwun Tong Road, Kwun Tong, Kowloon","contact": "2267 0883","parkingFee":12,"spending":300, "detail":"This is evident in its determination to develop East Kowloon in recent years with Millennium City phases one through five: the largest shopping and commercial complex in Hong Kong. The name is a combination of am and pm, or day and night, reflecting the innovative late night shopping and Omni lifestyle magazine concept. Retailers will stay open until midnight, restaurants to 2:00am and entertainment spots till dawn.", "poster":"https://www.hkapm.com.hk/cccms/lib/uploads/system/application_20180731_zeeAf.jpg", "lots":100, "latitude": 22.3121738, "longitude": 114.22513219999996, "id": 637 }
+          { "district":"Kowloon" ,"name":"apm", "address": "NO. 418 Kwun Tong Road, Kwun Tong, Kowloon","contact": "2267 0883","parkingFee":12,"spending":300, "detail":"This is evident in its determination to develop East Kowloon in recent years with Millennium City phases one through five: the largest shopping and commercial complex in Hong Kong. The name is a combination of am and pm, or day and night, reflecting the innovative late night shopping and Omni lifestyle magazine concept. Retailers will stay open until midnight, restaurants to 2:00am and entertainment spots till dawn.", "poster":"https://www.hkapm.com.hk/cccms/lib/uploads/system/application_20180731_zeeAf.jpg", "lots":100, "latitude": 22.3121738, "longitude": 114.22513219, "id": 637 }
       ];
 
       malls.forEach(function (mall) {
@@ -83,7 +82,7 @@ Member.findOne(101).exec(function (err, model) {
     if (model == null) {
   
         var shops = [
-             {  "mallName": "New Town Plaza" , "name": "qw", "shopNo": "123", "id": 27,"uid": 120}
+             {  "mallName": "New Town Plaza" , "name": "OK Store", "shopNo": "123", "id": 27,"uid": 120}
         ];
   
         shops.forEach(function (shop) {

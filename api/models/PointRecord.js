@@ -9,6 +9,35 @@ module.exports = {
 
   attributes: {
 
+    mallName: {
+      type: 'string'
+    },
+
+    shopId: {
+      type: 'integer'
+    },
+
+    shopName: {
+      type: 'string'
+    },
+
+    userId: {
+      type: 'integer' 
+  },
+
+    genTime: {
+      type: 'string'
+  },
+
+    consumption: {
+      type: 'float'
+  },
+
+    point: {
+      type: 'integer'
+  }
+
+ 
   //   belongsTo: {
   //     collection: 'member',
   //     via: 'has'
