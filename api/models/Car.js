@@ -21,7 +21,7 @@ module.exports = {
 
   state: {
       type: 'string',
-      enum: ['entry', 'leave', 'parking'],
+      enum: ['enter', 'leave'],
       defaultsTo: 'leave'
   }
 

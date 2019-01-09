@@ -12,10 +12,32 @@ module.exports = {
 create: function (req, res) {
     if (req.method == "POST") {
         Mall.create(req.body.Mall).exec(function (err, model) {
-            return res.send("Successfully Created!");
+        });
+        Mall.find().exec(function (err, malls) {
+            return res.view('mall/addCarpark', { 'malls':malls});
         });
     } else {
         return res.view('mall/create');
+    }
+},
+
+addCarPark: function(req, res){
+    if (req.method == "POST") {
+        Carpark.create(req.body.Carpark).exec(function (err, carpark) {
+            User.create(req.body.User).exec(function (err, user) {
+            carpark.uid = user.id;
+            user.save();
+            carpark.save();
+            Mall.find().exec(function (err, malls) {
+                return res.view('mall/addShop', { 'malls':malls});
+            });
+        });
+    });
+    } else {
+        Mall.find().exec(function (err, malls) {
+            return res.view('mall/addCarpark', { 'malls':malls});
+        });
+        
     }
 },
 
@@ -60,6 +82,8 @@ edit: function (req, res) {
     },
 
     getLots: function (req, res) {
+        console.log("getLots:")
+        console.log("getLots:" + req.body.mallName)
             Mall.findOne({ name: req.body.mallName }).exec(function (err, mall) {
                 console.log(req.body.mallName)
                 console.log(mall.lots)
@@ -67,7 +91,6 @@ edit: function (req, res) {
                 return res.send(lots);
             });
         },
-
 
     detail: function (req, res) {
         Mall.findOne(req.params.id).exec(function (err, model) {
@@ -97,7 +120,9 @@ addShop: function(req, res){
                             shop.save();
                         } 
                 });
-            return res.send("Successfully Created!");
+                Mall.find().exec(function (err, malls) {
+                    return res.view('mall/addShop', { 'malls':malls});
+                });
            
         });
     });
@@ -108,28 +133,6 @@ addShop: function(req, res){
         
     }
 },
-
-
-showMall: function (req, res) {
-
-    Shop.findOne(req.params.id).populateAll().exec( function (err, model) {
-    
-      return res.json(model);
-    
-    });
-},
-
-showShop: function (req, res) {
-
-    Mall.findOne(req.params.id).populateAll().exec( function (err, model) {
-    
-      return res.json(model);
-    
-    });
-},
-
-
-
 
 
 };

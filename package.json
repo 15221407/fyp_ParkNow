@@ -5,6 +5,7 @@
   "description": "a Sails application",
   "keywords": [],
   "dependencies": {
+    "apn": "^2.2.0",
     "bson": "^4.0.0",
     "ejs": "2.3.4",
     "grunt": "1.0.1",
@@ -38,5 +39,10 @@
     "url": "git://github.com/15221407/ParkNow.git"
   },
   "author": "15221407",
-  "license": ""
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/15221407/ParkNow/issues"
+  },
+  "homepage": "https://github.com/15221407/ParkNow#readme",
+  "devDependencies": {}
 }

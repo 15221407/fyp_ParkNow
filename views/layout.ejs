@@ -56,7 +56,11 @@
             <li class="nav-item">
                 <a class="nav-item nav-link <%=req.path=='/shop/addPoint' ? 'active':''%>" href="/shop/addPoint">Add point</a>
               </li>
-            <% } %>
+            <% } else if (req.session.role == 'carpark'){ %>
+              <li class="nav-item">
+                  <a class="nav-item nav-link <%=req.path=='/carpark/parking' ? 'active':''%>" href="/carpark/parking">Parking</a>
+                </li>
+              <% } %>
         </ul>
       </div>
 

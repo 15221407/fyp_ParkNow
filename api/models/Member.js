@@ -25,6 +25,10 @@ module.exports = {
 
   licensePlate: {
     type: 'string'
+},
+
+deviceToken: {
+  type: 'string'
 }
 
 

@@ -1,0 +1,41 @@
+
+<!--create.ejs-->
+<form action="/mall/addCarPark" method="POST">
+    <div class="row">
+     <div class="col-xs-4 col-sm-6">
+         <div class="form-group">
+                <p><b><label>Add a new Carpark</label></b></p>
+                <label>CarPark Name</label>
+             <select required  class="form-control" name="Carpark[name]">
+            <option value="">Please select one:</option>    
+            <% malls.forEach( function(mall) { %>
+                <option value=<%= mall.name%>><%= mall.name%></option>
+                <% }); %>
+            </select>
+        
+        <label>Lots</label>
+        <input required type="number" class="form-control" name="Carpark[lots]">
+    </div>
+</div>
+
+
+<div class="col-xs-4 col-sm-6">
+    <div class="form-group">
+           <p><b><label>Create a CarPark Staff Account</label></b></p>
+            <label>Username</label>
+            <input required type="text" class="form-control" name="User[username]">
+     
+                <label>Password</label>
+                <input required type="text" class="form-control" name="User[password]">
+         
+                    <label>Role</label>
+                    <input required type="text" class="form-control" value="carpark" name="User[role]">
+                </div>
+            
+    
+</div>
+</div>
+<button type="submit" class="btn btn-primary">Submit</button>
+</div>
+
+</form>

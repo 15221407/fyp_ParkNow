@@ -55,7 +55,7 @@ module.exports = {
     poster: {
       type: 'string'
     },
-    
+ 
     supervises: {
       collection: 'shop',
       via: 'under'

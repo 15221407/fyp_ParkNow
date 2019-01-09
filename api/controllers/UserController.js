@@ -33,10 +33,23 @@ module.exports = {
                     req.session.username = req.body.username;
                     req.session.role = user.role;
                     req.session.uid = user.id;
+
+                 
+                    
                     if(user.role != "member"){
                         return res.view('user/home');
                     }
                     else{
+                        Member.findOne({ uid : req.session.uid }).exec(function (err, member) {
+                            if(member == null){
+                                Member.create(req.body.Member).exec(function (err, newMember) {
+                                    newMember.username = req.body.username;
+                                    newMember.uid = user.id;
+                                    newMember.point = 0 ;
+                                    newMember.save();
+                                });
+                             }
+                          });
                     return res.send("Sign In Sccessfully");}
     
                 });

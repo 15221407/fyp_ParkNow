@@ -33,6 +33,11 @@ module.exports.policies = {
     addPoint: 'isShop'
    },
 
+   CarparkController: {
+    parking: 'isCarpark'
+   },
+
+
   //  MemberController: {
   //   getPoint: 'isMember'
   //  }

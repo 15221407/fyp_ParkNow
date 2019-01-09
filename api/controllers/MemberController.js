@@ -16,6 +16,14 @@ module.exports = {
         });
     },
 
+    saveDeviceToken: function (req, res) {
+        Member.findOne({ username : req.session.username }).exec(function (err, member) {
+            console.log(req.session.uid);
+           member.deviceToken = req.body.token;
+           member.save();
+           return res.send("saved");
+        });
+    },
  
 
     showShoppingRecord: function (req, res) {
