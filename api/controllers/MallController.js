@@ -82,7 +82,6 @@ edit: function (req, res) {
     },
 
     getLots: function (req, res) {
-        console.log("getLots:")
         console.log("getLots:" + req.body.mallName)
             Mall.findOne({ name: req.body.mallName }).exec(function (err, mall) {
                 console.log(req.body.mallName)
