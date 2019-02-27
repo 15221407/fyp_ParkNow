@@ -1,0 +1,83 @@
+<html>
+    <title>
+        Cloud API Demo
+    </title>
+
+    <head>
+            <video id="video" width="320" height="240" autoplay></video>
+            <canvas id="canvas" width="320" height="240"></canvas>
+    </head>
+
+    <body>
+        License Plate: <p id="response"></p><br>
+    </body>
+
+
+    <script>
+    // Grab elements, create settings, etc.
+    var video = document.getElementById('video');
+    // Get access to the camera!
+    if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Not adding `{ audio: true }` since we only want video now
+        navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+            //video.src = window.URL.createObjectURL(stream);
+            video.srcObject = stream;
+            video.play();
+        });
+    }
+
+    function takeASnap(){
+    var image = new Image();
+    image.crossOrigin = 'Anonymous';
+
+    // Elements for taking the snapshot
+    var canvas = document.getElementById('canvas');
+    var context = canvas.getContext('2d');
+    var video = document.getElementById('video');
+    context.drawImage(video, 0, 0, 320, 240);
+    var dataURL = canvas.toDataURL('image/jpeg');
+    postFile(dataURL);
+
+    // image.src = src;
+    }
+
+    let timerId = setTimeout(function snap() {
+        takeASnap();
+        // takePhoto();
+        timerId = setTimeout(snap, 15000); // (*)
+    }, 15000);
+
+
+    function postFile(dataURL){
+        // Open connection to api.openalpr.com
+        var secret_key = "sk_93f5fba332951da39fa2173a";
+        var url = "https://api.openalpr.com/v2/recognize_bytes?recognize_vehicle=1&country=us&secret_key=" + secret_key;
+        // Send POST data and display response
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST',url,true);
+        xhr.send(dataURL.match(/,(.*)$/)[1]);
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4) {
+                var responseText = JSON.parse(xhr.responseText),
+                data = responseText.Data;
+                console.log(responseText);
+                if(responseText.results[0].plate!=null){
+                    console.log(responseText.results[0].plate);
+                    document.getElementById("response").innerHTML = responseText.results[0].plate;
+                    enterCarPark(responseText.results[0].plate);
+                }
+            } else {
+                document.getElementById("response").innerHTML = "Waiting on response...";
+            }
+        }
+    }
+
+    function enterCarPark(plate){
+    console.log(plate);
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', "/CarPark/parking/" + plate , true);
+    xhr.send();
+  }
+
+    </script>
+</html>

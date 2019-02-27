@@ -7,11 +7,11 @@
 
 module.exports = {
 
-    push: function (username, message ) {
+    push: function (userId, message ) {
 
         var token = '';
 
-        Member.findOne({ username: username }).exec(function (err, member) {
+        Member.findOne({ uid: userId }).exec(function (err, member) {
             token = member.deviceToken;
             console.log(member.deviceToken);
        
@@ -65,43 +65,73 @@ module.exports = {
 
     parking: function (req, res) {
         if (req.method == "GET"){
-            Carpark.findOne( { uid : req.session.uid }).exec(function (err, carpark) {
-                return res.view('carpark/parking', { 'mallName': carpark.name, 'mallId': carpark.uid});
-            });
+    
+        return res.view('carpark/licensePlateTest')
 
         }else {
-
-            var message = "Tested";
+            var message = "Fail";
             var username = "";
-            ParkingRecord.create(req.body.ParkingRecord).exec(function (err, parkingRecord) {
-                 Car.findOne({ licensePlate: parkingRecord.licensePlate}).exec(function (err, car) {
-                    if (car == null){ 
-                        // parkingRecord.destory();
-                        return res.send("Please bind the car first");
-                    }
-                    console.log(car);
-                    console.log(car.userId);
-                    Member.findOne({ uid: car.userId }).exec(function (err, member) {
-                    console.log(member.username);
-                    console.log(member.uid);
-                    parkingRecord.username = member.username;
-                    parkingRecord.uid = member.uid;
-                    parkingRecord.save();
+            var plate = req.params.id;
+            console.log(req.params.id);
 
-                    message = "You entered " + parkingRecord.mallName ;
-                    username = member.username ;
-                    module.exports.push(username, message);
-
+            //get current car park
+            Carpark.findOne( { uid : req.session.uid }).exec(function (err, carpark) {
+                //find the car owner
+                Car.findOne({ licensePlate: req.params.id }).exec(function (err, car) {
+                    // car.status = "enter";
+                    //create a parking record
+                    ParkingRecord.create().exec(function (err,parkingRecord) {
+                        parkingRecord.mallName = carpark.name
+                        parkingRecord.mallId = carpark.uid;
+                        parkingRecord.uid = car.userId;
+                        // parkingRecord.username = member.username;
+                        parkingRecord.licensePlate = plate 
+                        parkingRecord.save();
+                        //push notification
+                        message = "You entered " + parkingRecord.mallName ;
+                        // username = member.username ;
+                        module.exports.push(car.userId, message);
                     });
-           }); 
-        }); 
+                });
+            });
+            return res.view('carpark/licensePlateTest')
+            // ParkingRecord.create(req.body.ParkingRecord).exec(function (err, parkingRecord) {
+        //          Car.findOne({ licensePlate: req.body.plate }).exec(function (err, car) {
+        //             if (car == null){ 
+        //                 // parkingRecord.destory();
+        //                 return res.send("Please bind the car first");
+        //             }
+        //             console.log(car);
+        //             console.log(car.userId);
+        //             Member.findOne({ uid: car.userId }).exec(function (err, member) {
+        //             console.log(member.username);
+        //             console.log(member.uid);
+        //             parkingRecord.username = member.username;
+        //             parkingRecord.uid = member.uid;
+        //             parkingRecord.save();
 
+        //             message = "You entered " + parkingRecord.mallName ;
+        //             username = member.username ;
+        //             module.exports.push(username, message);
 
-           Carpark.findOne( { uid : req.session.uid }).exec(function (err, carpark) {
-            return res.view('carpark/parking', { 'mallName': carpark.name, 'mallId': carpark.uid});
-        });
+        //             });
+        //    }); 
+        // }); 
+        //    Carpark.findOne( { uid : req.session.uid }).exec(function (err, carpark) {
+        //     return res.view('carpark/parking', { 'mallName': carpark.name, 'mallId': carpark.uid});
+        // }
+        // );
             }
+    },
+
+    licensePlateTest: function (req, res) {
+
+        return res.view('carpark/licensePlateTest')
+
     }
+
+
+
 
 };
 

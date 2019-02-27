@@ -1,0 +1,6 @@
+Release/obj.target/test/test.o: ../test.cc \
+  /Users/christy/.nw-gyp/0.18.5/src/node.h \
+  /Users/christy/.nw-gyp/0.18.5/deps/v8/include/v8.h \
+  /Users/christy/.nw-gyp/0.18.5/deps/v8/include/v8-version.h \
+  /Users/christy/.nw-gyp/0.18.5/deps/v8/include/v8config.h \
+  /Users/christy/.nw-gyp/0.18.5/src/node_version.h

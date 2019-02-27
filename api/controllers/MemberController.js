@@ -9,7 +9,6 @@ module.exports = {
 
     getPoint: function (req, res) {
         Member.findOne({ uid : req.session.uid }).exec(function (err, member) {
-            console.log(req.session.uid)
             console.log("point: " + member.point) 
             var point = member.point.toString()
             return res.send(point);
@@ -17,8 +16,8 @@ module.exports = {
     },
 
     saveDeviceToken: function (req, res) {
-        Member.findOne({ username : req.session.username }).exec(function (err, member) {
-            console.log(req.session.uid);
+        Member.findOne({ uid : req.session.uid}).exec(function (err, member) {
+        console.log("token:" + req.body.token);
            member.deviceToken = req.body.token;
            member.save();
            return res.send("saved");

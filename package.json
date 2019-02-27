@@ -6,10 +6,14 @@
   "keywords": [],
   "dependencies": {
     "apn": "^2.2.0",
+    "body-parser": "^1.18.3",
     "braintree": "^2.14.0",
     "bson": "^4.0.0",
+    "connect-multiparty": "^2.2.0",
+    "cors": "^2.8.5",
     "ejs": "2.3.4",
-    "grunt": "1.0.1",
+    "express": "^4.16.4",
+    "grunt": "^1.0.3",
     "grunt-contrib-clean": "1.0.0",
     "grunt-contrib-coffee": "1.0.0",
     "grunt-contrib-concat": "1.0.1",
@@ -18,17 +22,18 @@
     "grunt-contrib-jst": "1.0.0",
     "grunt-contrib-less": "1.3.0",
     "grunt-contrib-uglify": "1.0.1",
-    "grunt-contrib-watch": "1.0.0",
+    "grunt-contrib-watch": "^1.1.0",
     "grunt-sails-linker": "~0.10.1",
-    "grunt-sync": "0.5.2",
+    "grunt-sync": "^0.8.0",
     "include-all": "^1.0.0",
     "mysql": "^2.16.0",
     "qrcode": "^1.3.2",
-    "rc": "1.0.1",
+    "rc": "^1.2.8",
     "sails": "^0.12.14",
     "sails-disk": "~0.10.9",
     "sails-mongo": "~0.10.9",
-    "sails-mysql": "~0.10.9"
+    "sails-mysql": "~0.10.9",
+    "xmlhttprequest": "^1.8.0"
   },
   "scripts": {
     "debug": "node debug app.js",
@@ -44,6 +49,5 @@
   "bugs": {
     "url": "https://github.com/15221407/ParkNow/issues"
   },
-  "homepage": "https://github.com/15221407/ParkNow#readme",
-  "devDependencies": {}
+  "homepage": "https://github.com/15221407/ParkNow#readme"
 }
