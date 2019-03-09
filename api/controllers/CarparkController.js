@@ -65,73 +65,83 @@ module.exports = {
 
     parking: function (req, res) {
         if (req.method == "GET"){
-    
-        return res.view('carpark/licensePlateTest')
-
-        }else {
+            return res.view('carpark/licensePlateTest', { 'action': 'enter'} )
+        } 
+        else {
             var message = "Fail";
-            var username = "";
-            var plate = req.params.id;
-            console.log(req.params.id);
-
+        
             //get current car park
             Carpark.findOne( { uid : req.session.uid }).exec(function (err, carpark) {
                 //find the car owner
                 Car.findOne({ licensePlate: req.params.id }).exec(function (err, car) {
-                    // car.status = "enter";
-                    //create a parking record
-                    ParkingRecord.create().exec(function (err,parkingRecord) {
-                        parkingRecord.mallName = carpark.name
-                        parkingRecord.mallId = carpark.uid;
-                        parkingRecord.uid = car.userId;
-                        // parkingRecord.username = member.username;
-                        parkingRecord.licensePlate = plate 
-                        parkingRecord.save();
-                        //push notification
-                        message = "You entered " + parkingRecord.mallName ;
-                        // username = member.username ;
-                        module.exports.push(car.userId, message);
-                    });
+                    if(car != null){
+                        car.state = "enter";
+                        car.save();
+                        //create a parking record
+                        ParkingRecord.findOne({ licensePlate: req.params.id, state:'enter' }).exec(function (err,parkingRecord) {
+                            if (parkingRecord != null){
+                                console.log("This car has entered");
+                                return;
+                            }else{
+                                ParkingRecord.create().exec(function (err,parkingRecord) {
+                                    parkingRecord.mallName = carpark.name
+                                    parkingRecord.mallId = carpark.uid;
+                                    parkingRecord.uid = car.userId;
+                                    parkingRecord.licensePlate = req.params.id; 
+                                    parkingRecord.enterAt  = new Date().toString();
+                                    parkingRecord.state  = 'enter';
+                                    parkingRecord.save();
+                                    //push notification
+                                    message = "You entered " + parkingRecord.mallName ;
+                                    module.exports.push(car.userId, message);
+                                 });
+                            }
+                        })
+                    }else{
+                        console.log("Cannot find this car");
+                    }
                 });
             });
-            return res.view('carpark/licensePlateTest')
-            // ParkingRecord.create(req.body.ParkingRecord).exec(function (err, parkingRecord) {
-        //          Car.findOne({ licensePlate: req.body.plate }).exec(function (err, car) {
-        //             if (car == null){ 
-        //                 // parkingRecord.destory();
-        //                 return res.send("Please bind the car first");
-        //             }
-        //             console.log(car);
-        //             console.log(car.userId);
-        //             Member.findOne({ uid: car.userId }).exec(function (err, member) {
-        //             console.log(member.username);
-        //             console.log(member.uid);
-        //             parkingRecord.username = member.username;
-        //             parkingRecord.uid = member.uid;
-        //             parkingRecord.save();
-
-        //             message = "You entered " + parkingRecord.mallName ;
-        //             username = member.username ;
-        //             module.exports.push(username, message);
-
-        //             });
-        //    }); 
-        // }); 
-        //    Carpark.findOne( { uid : req.session.uid }).exec(function (err, carpark) {
-        //     return res.view('carpark/parking', { 'mallName': carpark.name, 'mallId': carpark.uid});
-        // }
-        // );
+            return res.view('carpark/licensePlateTest', { 'action': 'enter'} )
+            }
+    },  
+    
+    
+    exit: function (req, res) {
+        if (req.method == "GET"){
+            return res.view('carpark/licensePlateTest', { 'action': 'leave'} )
+        } 
+        else {
+            var message = "Fail";
+        
+            //get current car park
+            Carpark.findOne( { uid : req.session.uid }).exec(function (err, carpark) {
+                //find the car owner
+                Car.findOne({ licensePlate: req.params.id }).exec(function (err, car) {
+                    if(car != null){
+                        car.state = "leave";
+                        car.save();
+                        //create a parking record
+                        ParkingRecord.findOne({ licensePlate: req.params.id, state:'enter' }).exec(function (err,parkingRecord) {
+                            if(parkingRecord == null){
+                                console.log("Error: This car has not entered carpark before.");
+                            }else{
+                                parkingRecord.leaveAt  = new Date().toString();
+                                parkingRecord.state = "leave";
+    ;                           parkingRecord.save();
+                                //push notification
+                                message = "You leaved " + parkingRecord.mallName ;
+                                module.exports.push(car.userId, message);
+                            }
+                         });
+                        }else{
+                            console.log("Cannot find this car");
+                        }
+                });
+            });
+            return res.view('carpark/licensePlateTest', { 'action': 'leave'} )
             }
     },
-
-    licensePlateTest: function (req, res) {
-
-        return res.view('carpark/licensePlateTest')
-
-    }
-
-
-
 
 };
 

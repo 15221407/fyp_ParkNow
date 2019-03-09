@@ -31,6 +31,12 @@ module.exports = {
         
         });
     },
+
+    showParkingRecord: function (req, res) {
+        ParkingRecord.find().where({ uid : { contains: req.session.uid }}).exec( function (err,records ) {
+          return res.json(records);
+        });
+    },
     
 
 

@@ -7,6 +7,58 @@
 
 module.exports = {
 
+getLicensePlate:function(req,res){
+
+  ParkingRecord.findOne({ uid : req.session.uid , state:'enter'}).exec(function(err,record){
+    if(record == null){
+      console.log("LicensePlate: No Record" )
+      return res.send("No Record")
+    }else {
+      console.log("LicensePlate: " + record.licensePlate)
+      return res.send(record.licensePlate.toString())
+  }
+  })
+
+},
+
+getEnterAt:function(req,res){
+
+  ParkingRecord.findOne({ uid : req.session.uid , state:'enter'}).exec(function(err,record){
+    if(record == null){
+      console.log("enterAt: No Record" )
+      return res.send("No Record")
+    }else {
+      console.log("enterAt: " + record.enterAt)
+      return res.send(new Date(record.enterAt).toLocaleString())
+  } 
+  })
+
+},
+
+
+getParkingTime:function(req,res){
+
+  ParkingRecord.findOne({ uid : req.session.uid , state:'enter'}).exec(function(err,record){
+    if(record == null){
+      console.log("enterAt: No Record" )
+      return res.send("No Record"); 
+    }else {
+      var enterTime = new Date(record.enterAt);
+      var currentTime = new Date();
+      // var time1 = new Date(enterTime);
+      // var time2 = new Date(currentTime);
+      var diff = currentTime .getTime() - enterTime.getTime();
+      console.log(enterTime);
+      console.log(currentTime);
+      // console.log(hours);
+      console.log(diff);
+      return res.send(diff.toString()); 
+  } 
+  })
+
+},
+
+
 prepay: function(req, res){
 
   //configure the environment and API credentials

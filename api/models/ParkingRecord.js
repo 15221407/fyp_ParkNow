@@ -20,11 +20,27 @@ module.exports = {
     uid: {
       type: 'integer'
     },
-
-    username: {
+    
+    enterAt:{
       type: 'string'
     },
 
+    leaveAt:{
+      type:'string'
+    },
+
+    state:{
+      type:'string',
+      enum: ['enter', 'leave'],
+      defaultsTo: 'enter'
+    },
+
+   paid:{
+      type:'string',
+      enum: ['Y', 'N'],
+      defaultsTo: 'N'
+    }
+    ,
     licensePlate: {
       type: 'string'
   }

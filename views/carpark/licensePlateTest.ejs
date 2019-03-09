@@ -4,11 +4,12 @@
     </title>
 
     <head>
-            <video id="video" width="320" height="240" autoplay></video>
-            <canvas id="canvas" width="320" height="240"></canvas>
+            <label id="action" value="<%=action%>"><%=action%></label>
     </head>
 
     <body>
+            <video id="video" width="320" height="240" autoplay></video>
+            <canvas id="canvas" width="320" height="240"></canvas>
         License Plate: <p id="response"></p><br>
     </body>
 
@@ -75,7 +76,13 @@
     function enterCarPark(plate){
     console.log(plate);
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', "/CarPark/parking/" + plate , true);
+    console.log(document.getElementById("action").innerHTML)
+    if( document.getElementById("action").innerHTML == 'leave'){
+        xhr.open('POST', "/CarPark/exit/" + plate , true);
+    }else if( document.getElementById("action").innerHTML == 'enter'){
+        xhr.open('POST', "/CarPark/parking/" + plate , true);
+    }
+
     xhr.send();
   }
 

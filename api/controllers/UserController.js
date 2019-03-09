@@ -33,8 +33,6 @@ module.exports = {
                     req.session.username = req.body.username;
                     req.session.role = user.role;
                     req.session.uid = user.id;
-
-                 
                     
                     if(user.role != "member"){
                         return res.view('user/home');
@@ -56,6 +54,12 @@ module.exports = {
             });
         }
     },
+
+    getUserId: function (req, res) {
+        console.log("User Id: " + req.session.uid);
+        return res.send(req.session.uid.toString());
+    },
+
 
     logout: function (req , res) {
         console.log("logout")
