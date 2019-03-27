@@ -9,15 +9,20 @@ module.exports = {
 
   attributes: {
 
-    district: {
-      type: 'string',
-      enum: ['New Territories', 'Kowloon', 'Hong Kong Island' ]
-  },
+    mallId:{
+      type: 'integer',
+      unique: true
+    },
 
     name: {
       type: 'string',
       unique: true
     },
+
+    district: {
+      type: 'string',
+      enum: ['New Territories', 'Kowloon', 'Hong Kong Island' ]
+  },
 
     address: {
       type: 'string'

@@ -9,6 +9,34 @@ module.exports = {
 
   attributes: {
 
+    uid: {
+      type: 'integer'
+    },
+
+    mallId:{
+      type: 'integer',
+      unique: true
+    },
+
+    mallName: {
+      type: 'string',
+      unique: true
+    },
+
+    type: {
+        type:'string',
+        enum: ['redeem', 'add'],
+    },
+
+    amount:{
+      type: 'integer',
+    },
+
+    redeemAt:{
+      type: 'string'
+    },
+
+
   }
 };
 

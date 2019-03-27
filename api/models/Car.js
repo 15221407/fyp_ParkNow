@@ -14,6 +14,11 @@ module.exports = {
       unique: true
   },
 
+  mallId: {
+    type: 'integer',
+    unique: true
+    },
+
   licensePlate: {
       type: 'string',
       unique: true

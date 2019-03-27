@@ -95,6 +95,7 @@ module.exports = {
                                     message = "You entered " + parkingRecord.mallName ;
                                     module.exports.push(car.userId, message);
                                  });
+
                             }
                         })
                     }else{
@@ -126,6 +127,7 @@ module.exports = {
                             if(parkingRecord == null){
                                 console.log("Error: This car has not entered carpark before.");
                             }else{
+                                
                                 parkingRecord.leaveAt  = new Date().toString();
                                 parkingRecord.state = "leave";
     ;                           parkingRecord.save();

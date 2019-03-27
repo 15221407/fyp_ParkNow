@@ -25,6 +25,17 @@ module.exports = {
                     // shop.create.add(pointRecord.id);
                     pointRecord.save();
                     member.save();
+
+                    Token.create().exec(function(err,token){
+                        token.uid = req.session.uid
+                        token.mallId = pointRecord.mallId
+                        token.mallName = pointRecord.mallName
+                        token.type = "add"
+                        token.amount = parseInt(pointRecord.point)
+                        token.redeemAt =  new Date().toString();
+                        token.save()
+                
+                      })
             });
         });
         // });

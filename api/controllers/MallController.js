@@ -26,6 +26,7 @@ addCarPark: function(req, res){
         Carpark.create(req.body.Carpark).exec(function (err, carpark) {
             User.create(req.body.User).exec(function (err, user) {
             carpark.uid = user.id;
+            carpark.mallId = user.id;
             user.save();
             carpark.save();
             Mall.find().exec(function (err, malls) {

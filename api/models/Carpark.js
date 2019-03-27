@@ -8,6 +8,10 @@
 module.exports = {
 
   attributes: {
+    mallId:{
+      type: 'integer',
+      unique: true
+    },
     name: {
       type: 'string'
     },
