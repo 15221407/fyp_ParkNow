@@ -32,14 +32,21 @@ module.exports = {
       type: 'integer'
     },
 
-    spending: {
+    peakHourFee: {
+      type: 'integer'
+    },
+
+    // spending: {
+    //   type: 'integer'
+    // },
+
+    redemptionPoint: {
       type: 'integer'
     },
 
     detail: {
       type: 'string'
     },
-
 
     contact: {
       type: 'string'

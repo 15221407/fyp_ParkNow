@@ -14,11 +14,7 @@ module.exports = {
         Member.findOne({ uid: userId }).exec(function (err, member) {
             token = member.deviceToken;
             console.log(member.deviceToken);
-       
-        
-         console.log(token);
         var apn = require('apn');
-
         // Set up apn with the APNs Auth Key
         var apnProvider = new apn.Provider({
             token: {
@@ -30,37 +26,27 @@ module.exports = {
         });
 
         // Enter the device token from the Xcode console
-       
         var deviceToken = member.deviceToken;
         // Prepare a new notification
         var notification = new apn.Notification();
-
         // Specify your iOS app's Bundle ID (accessible within the project editor)
         notification.topic = 'hk.edu.hkbu.comp.LS08Push';
-
         // Set expiration to 1 hour from now (in case device is offline)
         notification.expiry = Math.floor(Date.now() / 1000) + 3600;
-
         // Set app badge indicator
         notification.badge = 1;
-
         // Play ping.aiff sound when the notification is received
         notification.sound = 'ping.aiff';
-
         // Display the following message (the actual notification text, supports emoji)
         notification.alert = message;
-
         // Send any extra payload data with the notification which will be accessible to your app in didReceiveRemoteNotification
         notification.payload = { id: 123 };
-
         // Actually send the notification
         apnProvider.send(notification, deviceToken).then(function (result) {
-            // Check the result for any failed devices
-            console.log(result);
+        // Check the result for any failed devices
+        console.log(result);
         });
     });
-        // return res.json({});
-
     },
 
     parking: function (req, res) {
@@ -68,38 +54,34 @@ module.exports = {
             return res.view('carpark/licensePlateTest', { 'action': 'enter'} )
         } 
         else {
-            var message = "Fail";
-        
+            var message = "Error";
             //get current car park
             Carpark.findOne( { uid : req.session.uid }).exec(function (err, carpark) {
                 //find the car owner
                 Car.findOne({ licensePlate: req.params.id }).exec(function (err, car) {
-                    if(car != null){
-                        car.state = "enter";
-                        car.save();
-                        //create a parking record
-                        ParkingRecord.findOne({ licensePlate: req.params.id, state:'enter' }).exec(function (err,parkingRecord) {
-                            if (parkingRecord != null){
+                    if(car == null){
+                        console.log("Cannot find this car");
+                    }else{
+                        ParkingRecord.findOne({ licensePlate: req.params.id, state:'enter' }).exec(function (err,record) {
+                            if (record != null){
                                 console.log("This car has entered");
                                 return;
                             }else{
-                                ParkingRecord.create().exec(function (err,parkingRecord) {
-                                    parkingRecord.mallName = carpark.name
-                                    parkingRecord.mallId = carpark.uid;
-                                    parkingRecord.uid = car.userId;
-                                    parkingRecord.licensePlate = req.params.id; 
-                                    parkingRecord.enterAt  = new Date().toString();
-                                    parkingRecord.state  = 'enter';
-                                    parkingRecord.save();
+                                ParkingRecord.create().exec(function (err,record) {
+                                    record.mallName = carpark.name
+                                    record.mallId = carpark.uid;
+                                    record.uid = car.uid;
+                                    record.licensePlate = req.params.id; 
+                                    record.enterAt  = new Date().toString();
+                                    record.state  = 'enter';
+                                    record.save();
                                     //push notification
-                                    message = "You entered " + parkingRecord.mallName ;
-                                    module.exports.push(car.userId, message);
+                                    message = "You entered " + record.mallName ;
+                                    module.exports.push(car.uid, message);
                                  });
 
                             }
                         })
-                    }else{
-                        console.log("Cannot find this car");
                     }
                 });
             });
@@ -113,34 +95,29 @@ module.exports = {
             return res.view('carpark/licensePlateTest', { 'action': 'leave'} )
         } 
         else {
-            var message = "Fail";
-        
+            var message = "Error";
             //get current car park
-            Carpark.findOne( { uid : req.session.uid }).exec(function (err, carpark) {
+            // Carpark.findOne( { uid : req.session.uid }).exec(function (err, carpark) {
                 //find the car owner
                 Car.findOne({ licensePlate: req.params.id }).exec(function (err, car) {
-                    if(car != null){
-                        car.state = "leave";
-                        car.save();
-                        //create a parking record
-                        ParkingRecord.findOne({ licensePlate: req.params.id, state:'enter' }).exec(function (err,parkingRecord) {
-                            if(parkingRecord == null){
+                    if(car == null){
+                        console.log("Cannot find this car");
+                    }else{
+                        ParkingRecord.findOne({ licensePlate: req.params.id, state:'enter', mallId:req.session.uid}).exec(function (err,record) {
+                            if(record == null){
                                 console.log("Error: This car has not entered carpark before.");
                             }else{
-                                
-                                parkingRecord.leaveAt  = new Date().toString();
-                                parkingRecord.state = "leave";
-    ;                           parkingRecord.save();
+                                record.leaveAt  = new Date().toString();
+                                record.state = "leave";
+    ;                           record.save();
                                 //push notification
-                                message = "You leaved " + parkingRecord.mallName ;
-                                module.exports.push(car.userId, message);
+                                message = "You leaved " + record.mallName ;
+                                module.exports.push(car.uid, message);
                             }
                          });
-                        }else{
-                            console.log("Cannot find this car");
-                        }
+                    }
                 });
-            });
+            // });
             return res.view('carpark/licensePlateTest', { 'action': 'leave'} )
             }
     },

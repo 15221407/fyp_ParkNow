@@ -14,11 +14,11 @@ module.exports = {
     },
 
     mallId: {
-      type: 'integer'
+      type: 'string'
     },
 
     uid: {
-      type: 'integer'
+      type: 'string'
     },
     
     enterAt:{

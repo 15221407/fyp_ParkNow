@@ -8,6 +8,10 @@
 module.exports = {
 
   attributes: {
+    uid: {
+      type: 'string',
+      unique: true
+  },
 
     username: {
       type: 'string',
@@ -15,20 +19,17 @@ module.exports = {
     },
 
     point: {
-      type: 'integer'
-    },
-
-    uid: {
       type: 'integer',
-      unique: true
-  },
-
+      defaultsTo: 0
+    },
   licensePlate: {
-    type: 'string'
+    type: 'string',
+    defaultsTo: "null"
 },
 
-deviceToken: {
-  type: 'string'
+  deviceToken: {
+    type: 'string',
+    defaultsTo: 'null'
 }
 
 

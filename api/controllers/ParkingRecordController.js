@@ -7,6 +7,14 @@
 
 module.exports = {
 
+getParkingState: function(req,res){
+  ParkingRecord.findOne({ uid : req.session.uid , state:'enter'}).exec(function(err,record){
+    if(record != null){
+      console.log("Parking State: enter" )
+      return res.send("enter")
+    }
+  })
+},
 
 getLicensePlate:function(req,res){
 
@@ -16,7 +24,7 @@ getLicensePlate:function(req,res){
       return res.send("No Record")
     }else {
       console.log("LicensePlate: " + record.licensePlate)
-      return res.send(record.licensePlate.toString())
+      return res.send(record.licensePlate)
   }
   })
 
@@ -107,7 +115,7 @@ calculateBeforePay: function(req, res){
   var hour ;
   var finalFee ;
   var deductedPoint ;
-  ParkingRecord.findOne({ uid : req.session.uid , state:'enter'}).exec(function(err,record){
+  ParkingRecord.findOne({ uid : req.session.uid , state:'enter' }).exec(function(err,record){
       var enterTime = new Date(record.enterAt);
       var currentTime = new Date();
       var diff = currentTime .getTime() - enterTime.getTime();

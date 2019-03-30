@@ -9,26 +9,20 @@ module.exports = {
 
   attributes: {
 
-  userId: {
-      type: 'integer',
-      unique: true
+  uid: {
+      type: 'string'
   },
-
-  mallId: {
-    type: 'integer',
-    unique: true
-    },
 
   licensePlate: {
       type: 'string',
       unique: true
-  },
-
-  state: {
-      type: 'string',
-      enum: ['enter', 'leave'],
-      defaultsTo: 'leave'
   }
+
+//   state: {
+//       type: 'string',
+//       enum: ['enter', 'leave'],
+//       defaultsTo: 'leave'
+//   }
 
   },
 
