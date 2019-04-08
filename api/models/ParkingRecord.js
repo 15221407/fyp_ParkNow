@@ -17,6 +17,14 @@ module.exports = {
       type: 'string'
     },
 
+    carparkName: {
+      type: 'string'
+    },
+
+    carparkId: {
+      type: 'string'
+    },
+
     uid: {
       type: 'string'
     },
@@ -39,8 +47,8 @@ module.exports = {
       type:'string',
       enum: ['Y', 'N'],
       defaultsTo: 'N'
-    }
-    ,
+    },
+    
     licensePlate: {
       type: 'string'
   }

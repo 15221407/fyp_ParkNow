@@ -7,6 +7,34 @@
 
 module.exports = {
 
+    index: function (req, res) {        
+        Carpark.find().where({ mallId : { contains: req.session.uid }}).exec(function (err, carpark) {
+            return res.view('carpark/index', { 'carparks': carpark });
+        });
+    },
+
+    create: function(req, res){
+        if (req.method == "GET"){
+            return res.view('carpark/create');
+        }else{
+            Carpark.create(req.body.Carpark).exec(function (err, carpark) {
+                User.create(req.body.User).exec(function (err, user) {
+                    Mall.findOne({mallId : req.session.uid}).exec(function (err, mall){
+                        carpark.mallId = mall.mallId ;
+                        carpark.mallName = mall.mallName ;
+                        carpark.carparkId = mall.mallId + '-CP' + user.id;
+                        user.uid = mall.mallId + '-CP' + user.id;
+                        user.role = 'carpark';
+                        carpark.save();
+                        user.save();
+                        res.send("Created.")
+                    });
+                });
+            });
+        }
+    },
+
+
     push: function (userId, message ) {
 
         var token = '';
@@ -56,7 +84,7 @@ module.exports = {
         else {
             var message = "Error";
             //get current car park
-            Carpark.findOne( { uid : req.session.uid }).exec(function (err, carpark) {
+            Carpark.findOne( { carparkId : req.session.uid }).exec(function (err, carpark) {
                 //find the car owner
                 Car.findOne({ licensePlate: req.params.id }).exec(function (err, car) {
                     if(car == null){
@@ -68,15 +96,17 @@ module.exports = {
                                 return;
                             }else{
                                 ParkingRecord.create().exec(function (err,record) {
-                                    record.mallName = carpark.name
-                                    record.mallId = carpark.uid;
+                                    record.mallName = carpark.mallName;
+                                    record.mallId = carpark.mallId;
+                                    record.carparkId = carpark.carparkId;
+                                    record.carparkName = carpark.carparkName;
                                     record.uid = car.uid;
-                                    record.licensePlate = req.params.id; 
+                                    record.licensePlate = req.params.id;
                                     record.enterAt  = new Date().toString();
                                     record.state  = 'enter';
                                     record.save();
                                     //push notification
-                                    message = "You entered " + record.mallName ;
+                                    message = "Welcome to " + record.mallName + "! You entered " + record.carparkName;
                                     module.exports.push(car.uid, message);
                                  });
 

@@ -9,20 +9,25 @@ module.exports = {
 
   attributes: {
 
+    mallId: {
+      type: 'string',
+  },
+
     mallName: {
       type: 'string',
   },
 
-    name: {
-      type: 'string'
-    },
-
     shopNo: {
       type: 'string'
+    }, 
+
+    shopName: {
+      type: 'string'
     },
 
-    uid: {
-      type: 'integer'
+    shopId: {
+      type: 'string',
+      unique: true
     },
     
     under: {

@@ -7,40 +7,76 @@
 
 module.exports = {
 
+    index: function (req, res) {
+        console.log(req.session.uid)
+        // console.log(mallId)
+        
+
+        Shop.find().where({ mallId : { contains: req.session.uid }}).exec(function (err, shops) {
+            return res.view('shop/index', { 'shops':shops });
+        });
+    },
+
+    create: function(req, res){
+        if (req.method == "GET"){
+            Mall.findOne({mallId : req.session.uid}).exec(function (err, malls) {
+                return res.view('shop/create', { 'malls':malls});
+            });
+        }else{
+            Shop.create(req.body.Shop).exec(function (err, shop) {
+                User.create(req.body.User).exec(function (err, user) {
+                    console.log(req.session.uid);
+                    
+                    Mall.findOne({mallId : req.session.uid}).exec(function (err, mall){
+                        shop.mallId = mall.mallId ;
+                        shop.mallName = mall.mallName ;
+                        shop.shopId = mall.mallId + '-' + user.id;
+                        user.uid = mall.mallId + '-' + user.id;
+                        user.role = 'shop';
+                        shop.save();
+                        user.save();
+                        res.send("Created.")
+                    });
+                });
+            });
+        }
+    },
+
     addPoint: function (req, res) {
         if (req.method == "GET"){
-    
-            Shop.findOne( { uid : req.session.uid }).exec(function (err, shop) {
-                return res.view('shop/addPoint', { 'mallName': shop.mallName, 'shopuid': shop.uid , 'shopName': shop.name});
+            Shop.findOne( { shopId : req.session.uid }).exec(function (err, shop) {
+                return res.view('shop/addPoint', { 'mallName': shop.mallName, 'shopuid': shop.shopId , 'shopName': shop.shopName});
             });
         }else {
-            // Shop.findOne( { uid : req.session.uid }).exec(function (err, shop) {
-                PointRecord.create(req.body.PointRecord).exec(function (err, pointRecord) {
-                    Member.findOne({ uid: pointRecord.userId}).exec(function (err, member) {
-                        if (member == null){ 
-                            return res.send("No such user");
-                        }
-                    member.point = parseInt(pointRecord.point) + parseInt(member.point) ; 
-                    // member.has.add(pointRecord.id);
-                    // shop.create.add(pointRecord.id);
-                    pointRecord.save();
-                    member.save();
-
-                    Token.create().exec(function(err,token){
-                        token.uid = req.session.uid
-                        token.mallId = pointRecord.mallId
-                        token.mallName = pointRecord.mallName
-                        token.type = "add"
-                        token.amount = parseInt(pointRecord.point)
-                        token.redeemAt =  new Date().toString();
-                        token.save()
-                
-                      })
+            
+            Shop.findOne( { shopId : req.session.uid }).exec(function (err, shop) {
+                console.log(shop)
+                ShoppingRecord.create().exec(function(err,record){
+                    record.mallId = shop.mallId
+                    record.mallName = shop.mallName
+                    record.shopId = shop.shopNo
+                    record.shopName = shop.shopName
+                    record.uid = req.body.Shopping.uid
+                    record.consumption = req.body.Shopping.consumption
+                    record.gainedPoint = req.body.Shopping.gainedPoint
+                    record.save();
+                    Member.findOne({ uid : req.body.Shopping.uid}).exec(function(err,member){
+                        member.point =  member.point + record.gainedPoint  ;
+                        member.save();
+                    })
+                    PointRecord.create().exec(function(err,pointRecord){
+                        pointRecord.uid = record.uid
+                        pointRecord.mallId = record.mallId
+                        pointRecord.mallName = record.mallName
+                        pointRecord.type = 'add'
+                        pointRecord.amount = record.gainedPoint
+                        pointRecord.actionAt = new Date().toString();
+                        pointRecord.save();
+                    })
+                })
             });
-        });
-        // });
-              Shop.findOne( { uid : req.session.uid }).exec(function (err, shop) {
-                return res.view('shop/addPoint', {'mallName': shop.mallName, 'shopuid': shop.uid , 'shopName': shop.name});
+            Shop.findOne( { shopId  : req.session.uid }).exec(function (err, shop) {
+                return res.view('shop/addPoint', {'mallName': shop.mallName, 'shopuid': shop.shopId  , 'shopName': shop.shopName});
             });
             }
     }

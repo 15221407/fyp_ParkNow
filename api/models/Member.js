@@ -22,10 +22,10 @@ module.exports = {
       type: 'integer',
       defaultsTo: 0
     },
-  licensePlate: {
-    type: 'string',
-    defaultsTo: "null"
-},
+//   licensePlate: {
+//     type: 'string',
+//     defaultsTo: "null"
+// },
 
   deviceToken: {
     type: 'string',

@@ -1,0 +1,100 @@
+
+<!--create.ejs-->
+
+<form action="/mall/addMall" method="POST">
+    <div class="row">
+     <div class="col-xs-4 col-sm-6">
+         <div class="form-group">
+                <p><b><label>Add a shopping mall</label></b></p>
+                <label>District</label>
+                <select required  class="form-control" name="Mall[district]">
+                    <option value="">Please select one:</option>
+                    <option value="Kowloon">Kowloon</option>
+                    <option value="HK Island">HK Island</option>
+                    <option value="New Territories">New Territories</option>
+                </select>
+      
+            <label>Mall name</label>
+            <input required type="text" class="form-control" name="Mall[mallName]">
+        
+            <label>Address</label>
+            <input required type="text" class="form-control" name="Mall[address]">
+
+            <label>Contact</label>
+            <input required type="number" class="form-control" name="Mall[Contact]">
+
+            <label>lots </label>
+            <input required type="number" class="form-control" name="Mall[lots]">
+
+            <label>Latitude </label>
+            <input type="number" step="any" class="form-control" name="Mall[latitude]">
+      
+            <label>Longitude</label>
+            <input type="number" step="any" class="form-control" name="Mall[longitude]">
+
+
+
+            <label>Details</label>
+            <textarea required rows="4" class="form-control" name="Mall[detail]"></textarea>
+
+            <label>Poster: </label>
+            <input type="text" class="form-control" name="Mall[poster]"  pattern="https?://.+" title="Include http://">
+        </div>
+    </div>
+
+
+
+<div class="col-xs-4 col-sm-6">
+        <div class="form-group">
+            <p><b><label>Parking Charge</label></b></p>
+
+            <label>Standard Parking Fee per Hour (hkd)</label>
+            <input required type="number" class="form-control" name="Mall[parkingFee]">
+
+            <label>Peak Hour Parking Fee per Hour (hkd)</label>
+            <input required type="number"  class="form-control" name="Mall[peakHourFee]">
+
+            <label>Point for One Hour Free Parking</label>
+            <input required type="number"  class="form-control" name="Mall[redemptionPoint]">
+        </div>
+
+
+    <div class="form-group">
+        <p><b><label>Create a Mall Account</label></b></p>
+        <label>Username</label>
+        <input required type="text" class="form-control" name="User[username]">
+    
+        <label>Password</label>
+        <input required type="text" class="form-control" name="User[password]">
+
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>         
+</div>
+
+</form>
+
+
+<script type="text/javascript">
+    // function submitForm(oFormElement){
+    //     var xhr = new XMLHttpRequest();
+    //     xhr.onload = function(){
+    //         if (xhr.responseText == "Created successfully.") {
+    //             window.location = "/addMall";
+    //         }
+    //         else {
+    //             alert (xhr.responseText);
+    //         } 
+    //     }
+    //     xhr.open (oFormElement.method, oFormElement.action, true);
+    //     xhr.send (new FormData (oFormElement));
+    //     return false;
+    // }
+
+    window.onload = function () {
+    
+    }
+
+    
+
+
+    </script>

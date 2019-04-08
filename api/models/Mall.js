@@ -10,11 +10,11 @@ module.exports = {
   attributes: {
 
     mallId:{
-      type: 'integer',
+      type: 'string',
       unique: true
     },
 
-    name: {
+    mallName: {
       type: 'string',
       unique: true
     },
@@ -22,37 +22,13 @@ module.exports = {
     district: {
       type: 'string',
       enum: ['New Territories', 'Kowloon', 'Hong Kong Island' ]
-  },
+   },
 
-    address: {
+   address: {
       type: 'string'
     },
 
-    parkingFee: {
-      type: 'integer'
-    },
-
-    peakHourFee: {
-      type: 'integer'
-    },
-
-    // spending: {
-    //   type: 'integer'
-    // },
-
-    redemptionPoint: {
-      type: 'integer'
-    },
-
-    detail: {
-      type: 'string'
-    },
-
-    contact: {
-      type: 'string'
-    },
-    
-    lots: {
+    contact:{
       type: 'integer'
     },
 
@@ -62,6 +38,10 @@ module.exports = {
 
     longitude: {
       type: 'decimal'
+    },
+
+    detail: {
+      type: 'string'
     },
 
     poster: {

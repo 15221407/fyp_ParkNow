@@ -16,26 +16,26 @@
                 <div class="form-group">
 
                         <label>Shopping Mall: </label>
-                        <input required type="text" class="form-control" name="PointRecord[mallName]" value="<%=mallName%>">
+                        <input required type="text" class="form-control" name="Shopping[mallName]" value="<%=mallName%>">
 
                         <label>Shop ID: </label>
-                        <input required type="number" class="form-control" name="PointRecord[shopId]" value="<%=shopuid%>">
+                        <input required type="text" class="form-control" name="Shopping[shopId]" value="<%=shopuid%>">
 
                         <label> ShopName: </label>
-                        <input required type="text" class="form-control" name="PointRecord[shopName]" value="<%=shopName%>">
+                        <input required type="text" class="form-control" name="Shopping[shopName]" value="<%=shopName%>">
 
 
                     <label>User ID: </label>
-                    <input required type="number" class="form-control" name="PointRecord[userId]" id="userId">
+                    <input required type="text" class="form-control" name="Shopping[uid]" id="uid">
                 
                     <label>QR Code Generation time: </label>
-                    <input required type="text" class="form-control" name="PointRecord[genTime]" id="genTime">
+                    <input required type="text" class="form-control" name="Shopping[genTime]" id="genTime">
 
                     <label>Consumption:</label>
-                    <input required type="number" step="0.01" class="form-control" name="PointRecord[consumption]" id="consumption" min=1>
+                    <input required type="number" step="0.01" class="form-control" name="Shopping[consumption]" id="consumption" min=1>
         
                     <label>Point: </label>
-                    <input required type="number" class="form-control" name="PointRecord[point]" id="point">
+                    <input required type="number" class="form-control" name="Shopping[gainedPoint]" id="gainedPoint">
                     
                 </div>
                 <button type="submit" class="btn btn-primary">Add point</button>
@@ -44,6 +44,19 @@
             
 
             <script>
+
+            function submitForm(oFormElement) {
+                var xhr = new XMLHttpRequest();
+                xhr.onload = function () {
+                    if (xhr.responseText != null) {
+                        alert(xhr.responseText);
+                     }
+                xhr.open(oFormElement.method, oFormElement.action, true);
+                xhr.send(new FormData(oFormElement));
+                return false;
+                }
+             }       
+
             let scanner = new Instascan.Scanner(
             {
                 video: document.getElementById('preview')
@@ -51,11 +64,9 @@
             );
 
             scanner.addListener('scan',function(content){
-                // alert(content)
-                // console.log(content)
                 splitContent = function (content) {
                     var string = content.trim().split(";");
-                    
+                    console.log(string)
                     var genTime = new Date(string[1]).toLocaleString();
                     var currentTime = new Date().toLocaleString();
                     var time1 = new Date(genTime);
@@ -63,11 +74,11 @@
                     var  diff = (time2 - time1)/1000 /60 ;
 
                     if ( diff >= 15 ) {
-                        document.getElementById("userId").value = " " ;
+                        document.getElementById("uid").value = " " ;
                         document.getElementById("genTime").value = " ";
                         alert("Invalid Qr code. Please Refreash.");
                     }else{
-                        document.getElementById("userId").value = string[0];
+                        document.getElementById("uid").value = string[0];
                         document.getElementById("genTime").value = string[1];
                     }
                 };
@@ -89,7 +100,7 @@
                 if(consumption.value > 0 )
                 {
                     var point =  parseInt(consumption.value/100)
-                    document.getElementById("point").value = point
+                    document.getElementById("gainedPoint").value = point
                 }
             });
 

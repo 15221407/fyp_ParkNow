@@ -10,8 +10,8 @@ module.exports = {
         // json function
         json: function (req, res) {
                 Car.find().where({ uid : { contains: req.session.uid }}).exec(function (err, cars) {
-                console.log(cars)
-                return res.json(cars);
+                        console.log(cars)
+                        return res.json(cars);
                 });
      },
 
@@ -34,9 +34,15 @@ module.exports = {
     },
 
     removeCar: function(req,res){
-        Car.findOne({uid:req.session.uid , licensePlate : req.body.licensePlate}).exec(function (err,car){
-                car.destroy();
-                res.send("Successfully Removed.")
+            console.log(req.body.licensePlate)
+            console.log(req.session.uid)
+        Car.findOne( {uid:req.session.uid , licensePlate : req.body.licensePlate}).exec(function (err,car){
+                if(car == null){
+                        return res.send("The car is not exist.");
+                }else{
+                        car.destroy();
+                        return res.send("Successfully Removed.")
+                }
         });
 
     }

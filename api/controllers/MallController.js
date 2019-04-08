@@ -7,40 +7,33 @@
 
 module.exports = {
 
-        // create function
-    
-create: function (req, res) {
-    if (req.method == "POST") {
-        Mall.create(req.body.Mall).exec(function (err, model) {
-        });
-        Mall.find().exec(function (err, malls) {
-            return res.view('mall/addCarpark', { 'malls':malls});
-        });
-    } else {
-        return res.view('mall/create');
-    }
+// create function
+    create: function(req, res){
+        if (req.method == "GET") {
+            return res.view('mall/create');
+        }else{
+            Mall.findOne({mallName : req.body.Mall.mallName}).exec(function(err, model){
+                if (model == null){
+                    Mall.create(req.body.Mall).exec(function (err, mall){
+                        User.create(req.body.User).exec(function (err, user) {
+                            mall.mallId = 'MA' + user.id ;
+                            user.uid = 'MA' + user.id ;
+                            user.role = 'mall';
+                            mall.save();
+                            user.save();
+                            res.send("Created.")
+                            });
+                        });
+                }else{
+                    res.send("The username has been used.") 
+                }
+            })
+  
+            }
 },
 
-addCarPark: function(req, res){
-    if (req.method == "POST") {
-        Carpark.create(req.body.Carpark).exec(function (err, carpark) {
-            User.create(req.body.User).exec(function (err, user) {
-            carpark.uid = user.id;
-            carpark.mallId = user.id;
-            user.save();
-            carpark.save();
-            Mall.find().exec(function (err, malls) {
-                return res.view('mall/addShop', { 'malls':malls});
-            });
-        });
-    });
-    } else {
-        Mall.find().exec(function (err, malls) {
-            return res.view('mall/addCarpark', { 'malls':malls});
-        });
-        
-    }
-},
+
+
 
 // json function
 json: function (req, res) {
@@ -67,13 +60,13 @@ edit: function (req, res) {
         });
     } else {
         Mall.findOne(req.params.id).exec(function (err, model) {
-            model.name = req.body.Mall.name;
+            model.mallName = req.body.Mall.mallName;
             model.district = req.body.Mall.district;
             model.address = req.body.Mall.address;
             model.contact = req.body.Mall.contact;
-            model.long = req.body.Mall.long;
-            model.lat = req.body.Mall.lat;
-            model.fee = req.body.Mall.fee;
+            model.longitude = req.body.Mall.longitude;
+            model.latitude = req.body.Mall.latitude;
+            // model.fee = req.body.Mall.fee;
             model.poster = req.body.Mall.poster;
             model.detail = req.body.Mall.detail;
             model.save();
@@ -102,36 +95,6 @@ edit: function (req, res) {
             }
         });
 
-},
-
-addShop: function(req, res){
-    if (req.method == "POST") {
-        Shop.create(req.body.Shop).exec(function (err, shop) {
-            User.create(req.body.User).exec(function (err, user) {
-            shop.uid = user.id;
-            user.save();
-            shop.save();
-            Mall.findOne({ name: shop.mallName}).exec(function (err,mall) {
-                        if (mall != null) {
-                            // console.log(model.id)
-                            // mall.supervises.add(shop.id);
-                            // shop.under.add(mall.id);
-                            mall.save();
-                            shop.save();
-                        } 
-                });
-                Mall.find().exec(function (err, malls) {
-                    return res.view('mall/addShop', { 'malls':malls});
-                });
-           
-        });
-    });
-    } else {
-        Mall.find().exec(function (err, malls) {
-            return res.view('mall/addShop', { 'malls':malls});
-        });
-        
-    }
 },
 
 

@@ -14,14 +14,14 @@
                                 <option value="HK Island">HK Island</option>
                                 <option value="New Territories">New Territories</option>
                         </select>
-                        <label>Shopping Mall</label>
-                        <input required type="text" class="form-control" name="Mall[name]" value="<%=mall.name%>">
+                        <label>Mall Name</label>
+                        <input required type="text" class="form-control" name="Mall[mallName]" value="<%=mall.mallName%>">
                         <label>Address</label>
                         <input required type="text" class="form-control" name="Mall[address]" value="<%=mall.address%>">
                         <label>Contact</label>
-                        <input required type="text" class="form-control" name="Mall[contact]" value="<%=mall.contact%>">
+                        <input required type="number" class="form-control" name="Mall[contact]" value="<%=mall.contact%>">
                         <label>Poster: </label>
-                        <input required type="text" class="form-control" name="Mall[poster]" value="<%=mall.poster%>" pattern="https?://.+" title="Include http://">
+                        <input type="text" class="form-control" name="Mall[poster]" value="<%=mall.poster%>" pattern="https?://.+" title="Include http://">
                     </div>
                 </div>
 
@@ -29,7 +29,7 @@
                     <div class="form-group">
                         <label>Standard Parking Fee per Hour (hkd)</label>
                         <input required type="number" class="form-control" name="Mall[parkingFee]" value="<%=mall.parkingFee%>">
-                        <label>Peak Hour Parking Fee per Hour(hkd)</label>
+                        <label>Peak Hour Parking Fee per Hour (hkd)</label>
                         <input required type="number" class="form-control" name="Mall[peakHourFee]" value="<%=mall.peakHourFee%>">
                         <label>Point for One Hour Free Parking</label>
                         <input required type="number" class="form-control" name="Mall[redemptionPoint]" value="<%=mall.redemptionPoint%>">

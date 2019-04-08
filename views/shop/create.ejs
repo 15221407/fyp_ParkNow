@@ -1,20 +1,13 @@
 
 <!--create.ejs-->
-<form action="/mall/addShop" method="POST">
+<form action="/shop/create" method="POST">
     <div class="row">
      <div class="col-xs-4 col-sm-6">
          <div class="form-group">
                 <p><b><label>Add a new shop</label></b></p>
-                <label>Shopping mall</label>
-             <select required  class="form-control" name="Shop[mallName]">
-            <option value="">Please select one:</option>    
-            <% malls.forEach( function(mall) { %>
-                <option value=<%= mall.name%>><%= mall.name%></option>
-                <% }); %>
-            </select>
-      
+                
             <label>Shop Name</label>
-            <input required type="text" class="form-control" name="Shop[name]">
+            <input required type="text" class="form-control" name="Shop[shopName]">
     
         
         <label>Shop No.</label>
@@ -31,9 +24,7 @@
      
                 <label>Password</label>
                 <input required type="text" class="form-control" name="User[password]">
-         
-                    <label>Role</label>
-                    <input required type="text" class="form-control" value="shop" name="User[role]">
+        
                 </div>
             
     

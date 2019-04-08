@@ -6,6 +6,12 @@
  */
 
 module.exports = {
+    index: function (req, res) {
+        Member.find().exec(function (err, member) {
+            return res.view('member/index', { 'members': members });
+        });
+    },
+
 
     createNewAccount: function(req,res){
         User.findOne({"username" : req.body.username}).exec(function (err, user) {
@@ -15,8 +21,6 @@ module.exports = {
                 Member.create().exec(function(err, member){
                     member.username = req.body.username ; 
                     member.point = 0 ; 
-                    member.username = req.body.username ; 
-                    member.licensePlate = "null";
                     member.deviceToken = "null";
                     
                     User.create().exec(function(err, user){
@@ -39,13 +43,24 @@ module.exports = {
                         
                     })
                 })
-
             }
         })
-
-
      },
-    
+
+     genQRCode: function(req , res) {
+        Member.findOne({ uid : req.session.uid }).exec(function (err, member) {
+            if (member == null){
+                return res.send("No such user");
+            }else{
+                var QRCode = require('qrcode');
+                var datetime = new Date();
+                console.log(member.uid)
+                QRCode.toDataURL(member.uid + ';' + datetime, function (err, url) {
+                    return res.send(url);
+                });
+            }
+        });
+    },
 
     getPoint: function (req, res) {
         Member.findOne({ uid : req.session.uid }).exec(function (err, member) {
@@ -57,10 +72,10 @@ module.exports = {
 
     saveDeviceToken: function (req, res) {
         Member.findOne({ uid : req.session.uid}).exec(function (err, member) {
-        console.log("token:" + req.body.token);
-           member.deviceToken = req.body.token;
-           member.save();
-           return res.send("saved");
+            console.log("token:" + req.body.token);
+            member.deviceToken = req.body.token;
+            member.save();
+            return res.send("saved");
         });
     },
  

@@ -9,18 +9,40 @@ module.exports = {
 
   attributes: {
     mallId:{
-      type: 'integer',
+      type: 'string',
+    },
+
+    mallName:{
+      type: 'string',
+    },
+
+    carparkId: {
+      type: 'string',
       unique: true
     },
-    name: {
-      type: 'string'
+
+    carparkName: {
+      type: 'string',
+      unique: true
     },
 
     lots: {
       type: 'integer'
     },
 
-    uid: {
+    latitude: {
+      type: 'decimal'
+    },
+
+    longitude: {
+      type: 'decimal'
+    },
+
+    parkingFee: {
+      type: 'integer'
+    },
+
+    peakHourFee: {
       type: 'integer'
     },
     

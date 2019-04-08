@@ -33,7 +33,7 @@
     <!--STYLES END-->
   </head>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand">ParkNow CMS</a>
+      <a class="navbar-brand">iPark</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -47,10 +47,17 @@
             <a class="nav-item nav-link <%=req.path=='/mall/index' ? 'active':''%>" href="/mall/index">Manage Mall</a>
           </li>
           <li class="nav-item">
-            <a class="nav-item nav-link <%=req.path=='/token/index' ? 'active':''%>" href="/mall/addShop">Manage Shop</a>
+              <a class="nav-item nav-link <%=req.path=='/user/index' ? 'active':''%>" href="/user/index">Manage User</a>
+          </li>
+          <% }else if (req.session.role == 'mall') { %>
+          <li class="nav-item">
+            <a class="nav-item nav-link <%=req.path=='/carpark/index' ? 'active':''%>" href="/carpark/index">Manage CarPark</a>
           </li>
           <li class="nav-item">
-            <a class="nav-item nav-link <%=req.path=='#' ? 'active':''%>" href="#">Parking Record(Not working)</a>
+              <a class="nav-item nav-link <%=req.path=='/shop/index' ? 'active':''%>" href="/shop/index">Manage Shop</a>
+            </li>
+          <li class="nav-item">
+              <a class="nav-item nav-link <%=req.path=='/member/index' ? 'active':''%>" href="/member/index">Manage Member</a>
           </li>
           <% }else if (req.session.role == 'shop'){ %>
             <li class="nav-item">

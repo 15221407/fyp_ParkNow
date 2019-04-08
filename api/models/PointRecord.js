@@ -9,39 +9,30 @@ module.exports = {
 
   attributes: {
 
+    uid: {
+      type: 'string'
+    },
+
+    mallId:{
+      type: 'string'
+    },
+
     mallName: {
-      type: 'string'
+      type: 'string',
     },
 
-    shopId: {
-      type: 'integer'
+    type: {
+        type:'string',
+        enum: ['redeem', 'add'],
     },
 
-    shopName: {
-      type: 'string'
+    amount:{
+      type: 'integer',
     },
 
-    userId: {
-      type: 'integer' 
-  },
-
-    genTime: {
+    actionDate:{
       type: 'string'
-  },
-
-    consumption: {
-      type: 'float'
-  },
-
-    point: {
-      type: 'integer'
-  }
-
- 
-  //   belongsTo: {
-  //     collection: 'member',
-  //     via: 'has'
-  // },
+    }
 
   },
 

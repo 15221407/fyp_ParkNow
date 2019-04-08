@@ -1,0 +1,51 @@
+<!--create.ejs-->
+<form action="/carpark/create" method="POST">
+    <div class="row">
+     <div class="col-xs-4 col-sm-6">
+         <div class="form-group">
+            <p><b><label>Add a CarPark</label></b></p>
+                
+            <label>Carpark Name</label>
+            <input required type="text" class="form-control" name="Carpark[carparkName]">
+        
+            <label>Lots</label>
+            <input  required type="number" class="form-control" name="Carpark[lots]">
+
+            <label>Latitude</label>
+            <input required type="number" step="any" class="form-control" name="Carpark[latitude]">
+
+            <label>Longitude</label>
+            <input required type="number" step="any" class="form-control" name="Carpark[longitude]">
+
+            <label>Parking fee per hour</label>
+            <input type="number" class="form-control" name="Carpark[parkingFee]">
+
+            <label>Peak Hour Fee</label>
+            <input type="number" class="form-control" name="Carpark[peakHourFee]">
+        
+        </div>
+    </div>
+
+
+    <div class="col-xs-4 col-sm-6">
+        <div class="form-group">
+           <p><b><label>Create a CarPark Admin Account</label></b></p>
+            <label>Username</label>
+            <input required type="text" class="form-control" name="User[username]">
+     
+            <label>Password</label>
+            <input required type="text" class="form-control" name="User[password]">
+        
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+
+<script type="text/javascript">
+
+    window.onload = function () {
+
+    }
+    </script>

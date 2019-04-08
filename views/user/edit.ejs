@@ -1,0 +1,53 @@
+<html>
+
+<body>
+
+    <div class="container">
+        <form action="/user/edit/<%=user.id %>" method="POST">
+            <div class="row">
+                <div class="col-xs-4 col-sm-6">
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select required  class="form-control" name="User[role]" value="<%=user.role%>">
+                            <option value="admin">Admin</option>
+                            <option value="mall">Mall Admin</option>
+                            <option value="shop">Shop Staff</option>
+                            <option value="member">Member</option>
+                            <option value="visitior">Other</option>
+                        </select>
+                        <label>Username</label>
+                        <input required type="text" class="form-control" name="User[username]" value="<%=user.username%>">
+                        <label>Password</label>
+                        <input required type="text" class="form-control" name="User[password]" value="<%=user.password%>">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>      
+                </div>
+
+        <script type="text/javascript">
+
+            // function submitForm(oFormElement) {
+                // var customFormData = "";
+                // Object.keys(oFormElement).forEach(function (data) {
+                //     customFormData += encodeURI(oFormElement[data].name) + "=" + encodeURI(oFormElement[data].value) + "&";
+                // })
+
+                // var xhr = new XMLHttpRequest();
+                // xhr.onload = function () {
+                //     if (xhr.responseText == "updated successfully") {
+                //         alert(xhr.responseText);
+                //         location.reload(true);
+                //     }
+                //     else {
+                //         alert(xhr.responseText);
+                //     }
+                // }
+
+                // xhr.open(oFormElement.method, oFormElement.action, true);
+                // xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                // xhr.send(customFormData + "a");
+                // return false;
+            // }
+        </script>
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+<!--index.ejs-->
+<div class="container">
+        <td><button class="btn btn-primary"  onclick="javascript:location.href='/user/home'" > Back to Admin Homepage</button> </td>
+        <table class="table table-striped">
+            <tr>
+                <td>
+                    <a class="nav-link">
+                        <b>User ID</b>
+                    </a>
+                    </td> 
+                <td>
+                        <a class="nav-link">
+                            <b>Role</b>
+                        </a>
+                    </td>
+   
+                <td>
+                    <a class="nav-link">
+                        <b>User</b>
+                    </a>
+                </td>
+           
+                <td></td>
+                <td></td>
+             
+                <% users.forEach( function(model) { %>
+                    <tr>
+                        <td>
+                            <a class="nav-link">
+                                <%= model.uid %>
+                            </a>
+                        </td>
+    
+                        <td>
+                                <a class="nav-link">
+                                    <%= model.role%>
+                                </a>
+                            </td>
+    
+                        <td>
+                            <a class="nav-link">
+                                <%= model.username%>
+                            </a>
+                        </td>
+
+                        <td> 
+                            <a class="nav-item nav-link" href="edit/<%= model.id %>">Edit</a>
+                        </td>
+    
+                        <td>
+                             <button type="button" onclick="deleteUser('<%= model.id %>')">Delete
+                        </td>
+                    
+                        <% }); %>
+    </div>
+    
+    <script>
+            function deleteUser(id) {
+            
+                var r = confirm("Confirm Delete?");
+                if (r == true) {
+                
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "/user/delete/" + id, true);
+                    xhr.onload = function(e) {
+                        var jsonResponse = JSON.parse(this.responseText);
+                        alert(jsonResponse.message);
+                        location.reload(true); 
+                    };
+                    xhr.send();
+                    
+                } else {
+                    alert("cancelled");
+                }
+                
+            } 
+            </script>

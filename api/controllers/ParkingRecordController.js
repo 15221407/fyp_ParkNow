@@ -7,6 +7,14 @@
 
 module.exports = {
 
+  // json function
+  json: function (req, res) {
+    ParkingRecord.find().where({ uid : { contains: req.session.uid }}).exec(function (err, records) {
+        console.log(records)
+        return res.json(records);
+    });
+  },
+
 getParkingState: function(req,res){
   ParkingRecord.findOne({ uid : req.session.uid , state:'enter'}).exec(function(err,record){
     if(record != null){

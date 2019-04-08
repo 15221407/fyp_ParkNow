@@ -12,6 +12,51 @@ module.exports = {
         return res.view('user/home');
     },
     
+    //Account Managment
+    index: function (req, res) {
+        User.find().exec(function (err, users) {
+            return res.view('user/index', { 'users': users });
+        });
+    },
+        
+    edit: function(req,res){
+        if (req.method == "GET") {
+            User.findOne(req.params.id).exec(function (err, user) {
+                if (user == null)
+                    return res.send("No such person!");
+                else
+                    return res.view('user/edit', { 'user': user });
+            });
+        } else {
+            User.findOne(req.params.id).exec(function (err, user) {
+                user.username = req.body.User.username;
+                user.password = req.body.User.password;
+                user.save();
+                return res.send("Record updated");
+            });
+        }
+    
+        },
+    
+    delete: function(req,res){
+        User.findOne(req.params.id).exec(function (err, user) {
+            if (user.role == 'member'){
+                Car.find().where({uid: user.uid}).exec(function(err,car){
+                    Member.findOne({uid: user.uid}).exec(function(err,member){
+                        car.destroy();
+                        member.destroy();
+                        user.destroy();
+                        return res.send('Deleted')
+                    })
+                })
+            }else{
+                user.destroy();
+                return res.send('Deleted')
+            }
+        })
+    },
+
+
     login: function (req, res) {
 
         if (req.method == "GET")
@@ -29,12 +74,11 @@ module.exports = {
     
                     req.session.regenerate(function (err) { 
                      console.log("The new session id is " + req.session.id + ".");
-                    
+                     console.log("The uid is " + user.uid + ".");
                     req.session.username = req.body.username;
                     req.session.role = user.role;
-                    req.session.uid = user.id;
+                    req.session.uid = user.uid;
                     
-                  
                     return res.view('user/home');
                 });
             });
@@ -54,8 +98,10 @@ module.exports = {
                     console.log("The session id " + req.session.id + " is going to be destroyed.");
                     req.session.regenerate(function (err) {
                      console.log("The new session id is " + req.session.id + ".");
-                    req.session.username = req.body.username;
-                    req.session.uid = user.uid;
+                     console.log("The uid is " + user.uid + ".");
+                     req.session.username = req.body.username;
+                     req.session.role = user.role;
+                     req.session.uid = user.uid;
                     return res.send("Sign In Sccessfully")
                 });
             });
@@ -69,13 +115,15 @@ module.exports = {
     logout: function (req , res) {
         console.log("logout")
         console.log("The current session id " + req.session.id + " is going to be destroyed.");
-        Member.findOne({ uid : req.session.uid}).exec(function (err, member) {
-               member.deviceToken = "null";
-               member.save();
-               req.session.destroy(function (err) {
-                return res.send("Logout successfully");
+        if (req.session.role == 'member'){
+            Member.findOne({ uid : req.session.uid}).exec(function (err, member) {
+                member.deviceToken = "null";
+                member.save();
+                req.session.destroy(function (err) {
+                    return res.send("Logout successfully");
+                });
             });
-        });
+        }
     },
     
     getPoint: function (req, res) {
@@ -87,27 +135,5 @@ module.exports = {
         });
     },
 
-    qrCode: function(req , res) {
-
-        User.findOne({ username: req.body.username }).exec(function (err, user) {
-    
-            if (user == null || user.role != "member")
-                return res.send("No such user");
-    
-                var QRCode = require('qrcode');
-                var datetime = new Date();
-                QRCode.toDataURL(user.id + ';' + datetime, function (err, url) {
-                console.log(url)
-                console.log(user.id)
-                console.log(datetime)
-                return res.send(url);
-                });
-        });
-
-   
-
-    }
-
-    
 };
 
