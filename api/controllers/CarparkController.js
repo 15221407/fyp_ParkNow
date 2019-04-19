@@ -6,6 +6,12 @@
  */
 
 module.exports = {
+    // json function
+    json: function (req, res) {
+        Carpark.find().exec(function (err, carparks) {
+            return res.json(carparks);
+        });
+    },
 
     index: function (req, res) {        
         Carpark.find().where({ mallId : { contains: req.session.uid }}).exec(function (err, carpark) {
@@ -22,6 +28,7 @@ module.exports = {
                     Mall.findOne({mallId : req.session.uid}).exec(function (err, mall){
                         carpark.mallId = mall.mallId ;
                         carpark.mallName = mall.mallName ;
+                        carpark.district = mall.district;
                         carpark.carparkId = mall.mallId + '-CP' + user.id;
                         user.uid = mall.mallId + '-CP' + user.id;
                         user.role = 'carpark';
@@ -33,6 +40,8 @@ module.exports = {
             });
         }
     },
+
+
 
 
     push: function (userId, message ) {
@@ -95,18 +104,26 @@ module.exports = {
                                 console.log("This car has entered");
                                 return;
                             }else{
-                                ParkingRecord.create().exec(function (err,record) {
-                                    record.mallName = carpark.mallName;
-                                    record.mallId = carpark.mallId;
-                                    record.carparkId = carpark.carparkId;
-                                    record.carparkName = carpark.carparkName;
-                                    record.uid = car.uid;
-                                    record.licensePlate = req.params.id;
-                                    record.enterAt  = new Date().toString();
-                                    record.state  = 'enter';
-                                    record.save();
+                                ParkingRecord.create().exec(function (err,parking) {
+                                    RFIDTag.findOne({uid : parking.uid}).exec(function(err,tag){
+                                        if( tag != null){
+                                            tag.location = 'none';
+                                            tag.save();
+                                        } 
+                                    })
+                                    parking.parkingId = "NP-" + parking.id ; 
+                                    parking.recordType = "NP";
+                                    parking.mallName = carpark.mallName;
+                                    parking.mallId = carpark.mallId;
+                                    parking.carparkId = carpark.carparkId;
+                                    parking.carparkName = carpark.carparkName;
+                                    parking.uid = car.uid;
+                                    parking.licensePlate = req.params.id;
+                                    parking.enterAt  = new Date().toString();
+                                    parking.state  = 'enter';
+                                    parking.save();
                                     //push notification
-                                    message = "Welcome to " + record.mallName + "! You entered " + record.carparkName;
+                                    message = "Welcome to " + parking.mallName + "! You entered " +parking.carparkName;
                                     module.exports.push(car.uid, message);
                                  });
 
@@ -132,17 +149,57 @@ module.exports = {
                 Car.findOne({ licensePlate: req.params.id }).exec(function (err, car) {
                     if(car == null){
                         console.log("Cannot find this car");
+                        // res.send("Cannot find this car");
                     }else{
-                        ParkingRecord.findOne({ licensePlate: req.params.id, state:'enter', mallId:req.session.uid}).exec(function (err,record) {
-                            if(record == null){
+                        ParkingRecord.findOne({ licensePlate: req.params.id, state:'enter'}).exec(function (err,parking) {
+                            if(parking == null){
                                 console.log("Error: This car has not entered carpark before.");
+                            }else if (parking.paid == "N"){
+                                console.log("Error: This car has not entered carpark before.");
+                            }else if (parking.paid == "Y"){
+                                PaymentRecord.findOne({ paymentOf : parking.parkingId }).exec(function(err,payment){
+                                    var paidTime = new Date(payment.paidAt);
+                                    var currentTime = new Date();
+                                    var diff = currentTime.getTime() - paidTime.getTime();
+                                    var mins = Math.ceil(diff/60000) ;
+                                    console.log(mins); 
+                                    if ( mins < 15 ){
+                                        parking.leaveAt  = new Date().toString();
+                                        parking.state = "leave";
+                                        RFIDTag.findOne({uid : parking.uid}).exec(function(err,tag){
+                                            if( tag != null){
+                                                tag.location = 'none';
+                                                tag.save();
+                                            } 
+                                            parking.save();
+                                            //push notification
+                                            message = "You leaved " + parking.mallName ;
+                                            module.exports.push(car.uid, message);
+                                        })
+
+                                    }else {
+                                        ParkingRecord.create().exec(function (err,record) {
+                                            record.parkingId = "OT-" + record.id ; 
+                                            record.recordType = "OT" ; 
+                                            record.mallName = parking.mallName;
+                                            record.mallId = parking.mallId;
+                                            record.carparkId = parking.carparkId;
+                                            record.carparkName = parking.carparkName;
+                                            record.uid = car.uid;
+                                            record.licensePlate = req.params.id;
+                                            record.enterAt  = new Date().toString();
+                                            record.state  = 'enter';
+                                            record.save();
+                                            //push notification
+                                            message = "Please pay for overtime";
+                                            module.exports.push(car.uid, message);
+                                            console.log("Over 15 minutes");
+                                        })
+                                    }
+                                });
+                              
                             }else{
-                                record.leaveAt  = new Date().toString();
-                                record.state = "leave";
-    ;                           record.save();
-                                //push notification
-                                message = "You leaved " + record.mallName ;
-                                module.exports.push(car.uid, message);
+                                console.log("Unpaid");
                             }
                          });
                     }

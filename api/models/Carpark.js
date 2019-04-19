@@ -26,6 +26,11 @@ module.exports = {
       unique: true
     },
 
+    district: {
+      type: 'string',
+      enum: ['New Territories', 'Kowloon', 'Hong Kong Island' ]
+   },
+   
     lots: {
       type: 'integer'
     },
@@ -44,6 +49,10 @@ module.exports = {
 
     peakHourFee: {
       type: 'integer'
+    },
+
+    parkingCharge: {
+      type: 'string'
     },
     
   },

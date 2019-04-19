@@ -10,7 +10,7 @@ module.exports = {
   attributes: {
 
     mallId: {
-      type: 'integer'
+      type: 'string'
     },
     
     mallName: {
@@ -20,17 +20,17 @@ module.exports = {
     uid: {
       type: 'string'
     },
-    
-    username: {
-      type: 'string'
-    },
 
-    parkingHours:{
+    paidFee:{
       type: 'integer'
     },
 
-    parkingFee:{
-      type: 'interger'
+    paymentOf:{
+      type: 'string'
+    },
+
+    paidAt:{
+      type: 'string'
     }
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗

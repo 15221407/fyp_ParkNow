@@ -37,6 +37,10 @@ module.exports = {
       type: 'integer'
     },
 
+    addAt: {
+      type: 'string'
+    }
+
   },
 
 };

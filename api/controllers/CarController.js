@@ -45,7 +45,13 @@ module.exports = {
                 }
         });
 
-    }
+    },
 
+    getLicensePlate: function(req,res){
+        Car.find().where({ uid : { contains: req.params.id}}).exec(function (err,cars){
+                return res.json(cars);
+        });
+
+    }
 };
 

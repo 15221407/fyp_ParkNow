@@ -59,19 +59,20 @@ module.exports = {
                     record.uid = req.body.Shopping.uid
                     record.consumption = req.body.Shopping.consumption
                     record.gainedPoint = req.body.Shopping.gainedPoint
+                    record.addAt = new Date().toString();
                     record.save();
                     Member.findOne({ uid : req.body.Shopping.uid}).exec(function(err,member){
-                        member.point =  member.point + record.gainedPoint  ;
+                        member.point = parseInt(member.point) + parseInt(req.body.Shopping.gainedPoint) ;
                         member.save();
                     })
-                    PointRecord.create().exec(function(err,pointRecord){
-                        pointRecord.uid = record.uid
-                        pointRecord.mallId = record.mallId
-                        pointRecord.mallName = record.mallName
-                        pointRecord.type = 'add'
-                        pointRecord.amount = record.gainedPoint
-                        pointRecord.actionAt = new Date().toString();
-                        pointRecord.save();
+                    PointRecord.create().exec(function(err,point){
+                        point.uid = record.uid
+                        point.mallId = record.mallId
+                        point.mallName = record.mallName
+                        point.type = 'add'
+                        point.amount = record.gainedPoint
+                        point.actionDate = new Date().toLocaleString();
+                        point.save();
                     })
                 })
             });

@@ -9,7 +9,7 @@ module.exports = {
 
   // json function
   json: function (req, res) {
-    ParkingRecord.find().where({ uid : { contains: req.session.uid }}).exec(function (err, records) {
+    ParkingRecord.find().where({ uid : { contains: req.session.uid } , recordType : { contains: 'NP'}}).exec(function (err, records) {
         console.log(records)
         return res.json(records);
     });
@@ -18,8 +18,10 @@ module.exports = {
 getParkingState: function(req,res){
   ParkingRecord.findOne({ uid : req.session.uid , state:'enter'}).exec(function(err,record){
     if(record != null){
-      console.log("Parking State: enter" )
-      return res.send("enter")
+      console.log(record.state + "," + record.paid);
+      return res.send(record.state + "," + record.paid );
+    }else{
+      return res.send('leave,Y' )
     }
   })
 },
@@ -98,101 +100,116 @@ calculate: function(req, res){
   var totalFee ;
 
   ParkingRecord.findOne({ uid : req.session.uid , state:'enter'}).exec(function(err,record){
-    if(record == null){
-      console.log("culcalate: No Record" )
-      totalFee = 0 ;
-      res.send(totalFee.toString());
+    if(record == null || record.paid == "Y"){
+        console.log("culcalate: No Record" )
+        res.send("0");
       // return res.send("No Record"); 
     }else {
-      var enterTime = new Date(record.enterAt);
-      var currentTime = new Date();
-      var diff = currentTime .getTime() - enterTime.getTime();
-      hour = Math.ceil(diff/3600000) ; 
-      Mall.findOne({mallId : record.mallId}).exec(function(err,mall){
-        feePerHour = mall.parkingFee;
-        totalFee =  hour * feePerHour;
-        res.send(totalFee+","+hour+","+feePerHour+","+record.mallName);
+        var enterTime = new Date(record.enterAt);
+        var currentTime = new Date();
+        var diff = currentTime .getTime() - enterTime.getTime();
+        hour = Math.ceil(diff/3600000) ; 
+        Carpark.findOne({ carparkId : record.carparkId}).exec(function(err,carpark){
+          
+          feePerHour = carpark.parkingFee;
+          totalFee =  hour * feePerHour;
+          res.send(totalFee+","+hour+","+feePerHour+","+record.mallName);
         // res.send({totalFee , hour,  feePerHour});
       })
   } 
   })
 },
 
-calculateBeforePay: function(req, res){
+calculateBeforePay: function(req,res){
   //calculate the total parking fee
   var hour ;
-  var finalFee ;
+  var finalCharge ;
   var deductedPoint ;
   ParkingRecord.findOne({ uid : req.session.uid , state:'enter' }).exec(function(err,record){
       var enterTime = new Date(record.enterAt);
       var currentTime = new Date();
       var diff = currentTime .getTime() - enterTime.getTime();
       hour = Math.ceil(diff/3600000) ; 
-      Mall.findOne({mallId : record.mallId}).exec(function(err,mall){
-        finalFee =  (hour - req.body.redemptionHour) * mall.parkingFee ;
-        deductedPoint = req.body.redemptionHour * mall.parkingFee ;
-        if(finalFee > 0 ){
-        module.exports.paymentMethod(req,finalFee,deductedPoint);
-        }else{
+      Carpark.findOne({ carparkId : record.carparkId}).exec(function(err,carpark){
+        finalCharge =  (hour - req.body.redemptionHour) * carpark.parkingFee ;
+        deductedPoint = req.body.redemptionHour * carpark.parkingFee ;
+        
+        //if the charge more than $0 -> payment
+        if(finalCharge > 0 ){
 
+          console.log("payment method" + finalCharge)
+          //configure the environment and API credentials
+          var braintree = require("braintree");
+          var gateway = braintree.connect({
+            environment: braintree.Environment.Sandbox,
+            merchantId: "9ryqdwt6ng94trgr",
+            publicKey: "yr9qv5znttpcbgrj",
+            privateKey: "74b56a0784d0b8528683dc3bca7d118b"
+          });
+      
+          //Create a transaction
+          console.log("The nonce From The Client is " + req.body.payment_method_nonce);
+          var nonceFromTheClient = req.body.payment_method_nonce;
+          gateway.transaction.sale({
+            // amount: "10.00",
+            amount: finalCharge,
+            paymentMethodNonce: nonceFromTheClient,
+            options: {
+              submitForSettlement: true
+            }
+          }, function (err, result) {
+            console.log(result.success);
+            if (result.success){ 
+              module.exports.updateAfterPayment(req,deductedPoint,finalCharge);
+              res.send("Charged succefully");
+            }
+          });
+        
+        }else{
+          module.exports.updateAfterPayment(req,deductedPoint,0);
+          res.send("Charged succefully");
         }
       })
   })
 },
 
-paymentMethod: function(req,totalFee,deductedPoint,res){
-    console.log("payment method" + totalFee)
-    //configure the environment and API credentials
-    var braintree = require("braintree");
-    var gateway = braintree.connect({
-    environment: braintree.Environment.Sandbox,
-    merchantId: "9ryqdwt6ng94trgr",
-    publicKey: "yr9qv5znttpcbgrj",
-    privateKey: "74b56a0784d0b8528683dc3bca7d118b"
-  });
-
-  //Create a transaction
-  console.log("The nonce From The Client is " + req.body.payment_method_nonce);
-  var nonceFromTheClient = req.body.payment_method_nonce;
-  gateway.transaction.sale({
-    // amount: "10.00",
-    amount: totalFee,
-    paymentMethodNonce: nonceFromTheClient,
-    options: {
-      submitForSettlement: true
-    }
-  }, function (err, result) {
-    console.log(result.success);
-    module.exports.updateAfterPayment(req,deductedPoint);
-    // console.log(result.transaction.status);
-    // res.send("Charged succefully")
-  });
-  
-},
-
-updateAfterPayment: function(req,deductedPoint){
+updateAfterPayment: function(req,deductedPoint,totalFee){
   console.log("run????")
-  ParkingRecord.findOne({ uid : req.session.uid , state:'enter'}).exec(function(err,record){
-    record.paid = "Y" 
-    record.save(); 
+  ParkingRecord.findOne({ uid : req.session.uid , state:'enter'}).exec(function(err,parking){
+    parking.paid = "Y" 
+    parking.save(); 
 
     Member.findOne({ uid : req.session.uid}).exec(function(err,member){
       member.point -= deductedPoint ;
       member.save();  
-      
-      Token.create().exec(function(err,token){
-        token.uid = req.session.uid
-        token.mallId = record.mallId
-        token.mallName = record.mallName
-        token.type = "redeem"
-        token.amount = deductedPoint
-        token.redeemAt =  new Date().toString();
-        token.save()
 
+      var dateString = new Date().toString();
+      PaymentRecord.create().exec(function(err,payment){
+        payment.paidAt = dateString;
+        payment.mallId = parking.mallId;
+        payment.mallName = parking.mallName;
+        payment.uid = parking.uid;
+        payment.paidFee = totalFee;
+        payment.paymentOf = parking.parkingId;
+        payment.save();
       })
+
+      if(deductedPoint > 0){
+        PointRecord.create().exec(function(err,point){
+            point.actionAt = dateString;
+            point.uid = parking.uid
+            point.mallId = parking.mallId
+            point.mallName = parking.mallName
+            point.type = 'redeem'
+            point.amount = deductedPoint
+            point.save();
+           })
+       }
     })
   })
  
+
+
  
 
 

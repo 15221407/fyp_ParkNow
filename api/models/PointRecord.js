@@ -30,7 +30,7 @@ module.exports = {
       type: 'integer',
     },
 
-    actionDate:{
+    actionAt:{
       type: 'string'
     }
 

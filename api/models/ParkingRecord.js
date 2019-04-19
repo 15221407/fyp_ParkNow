@@ -9,6 +9,16 @@ module.exports = {
 
   attributes: {
 
+    parkingId:{
+      type: 'string',
+      unique: true
+    },
+
+    recordType:{
+      type:'string',
+      enum: ['NP', 'OT']
+    },
+
     mallName: {
       type: 'string'
     },

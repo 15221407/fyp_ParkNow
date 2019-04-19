@@ -29,7 +29,7 @@ module.exports = {
     },
 
     contact:{
-      type: 'integer'
+      type: 'string'
     },
 
     latitude: {

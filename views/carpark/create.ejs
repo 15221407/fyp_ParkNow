@@ -1,4 +1,11 @@
 <!--create.ejs-->
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="jquery.weekly-schedule-plugin.min.js"></script>
+    </head>
+
+    <body>
 <form action="/carpark/create" method="POST">
     <div class="row">
      <div class="col-xs-4 col-sm-6">
@@ -25,10 +32,19 @@
         
         </div>
     </div>
+   
 
-
-    <div class="col-xs-4 col-sm-6">
+    <div class="col-xs-4 col-sm-6">  
         <div class="form-group">
+            <p><b><label >Special Offer</label>
+              <button type="submit" class="btn btn-primary" onclick="addInput()"/>Add new offer</button></p></b>
+              <span id="responce"></span>
+                <select required type="text" id="weekDay" class="form-control" style="display: inline-block; width: 70px;" value='Sun' ></select> 
+                <select required type="text" id="startTime" class="form-control" style="display: inline-block; width: 100px;" value='00:00' ></select> 
+                <select required type="text" id="endTime" class="form-control" style="display: inline-block; width: 100px;" value='01:00'></select> 
+                  <input id='fee' type="number" class="form-control" style="display: inline-block; width: 70px;" value=0 >
+
+        
            <p><b><label>Create a CarPark Admin Account</label></b></p>
             <label>Username</label>
             <input required type="text" class="form-control" name="User[username]">
@@ -42,10 +58,49 @@
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
-
 <script type="text/javascript">
+  var weekdaysShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var time = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00','09:00', '10:00'];
 
-    window.onload = function () {
 
-    }
-    </script>
+    var weekDay = document.getElementById("weekDay");
+      for (item of weekdaysShort) {
+        var option = document.createElement("option");
+        option.text = item;
+        option.value = item;
+        weekDay.add(option)
+      }
+
+      var startTime= document.getElementById("startTime");
+      for (item of time) {
+        var option = document.createElement("option");
+        option.text = item;
+        option.value = item;
+        startTime.add(option)
+      }
+
+      var endTime= document.getElementById("endTime");
+      for (item of time) {
+        var option = document.createElement("option");
+        option.text = item;
+        option.value = item;
+        endTime.add(option)
+      }
+
+      var countBox =1;
+      var boxName = 0;
+      function addInput(){
+        var boxName="textBox"+countBox; 
+        document.getElementById('responce').innerHTML+="<p><select required type='text' id='weekDay' class='form-control' style='display: inline-block; width: 70px;' value='Sun'></select> "+
+                "<select required type='text' id='startTime' class='form-control' style='display: inline-block; width: 100px;'  value='00:00'></select> "+
+                "<select required type='text' id='endTime' class='form-control' style='display: inline-block; width: 100px;'  value='01:00'></select>"+
+                  "<input id='fee' type='number' class='form-control' style='display: inline-block; width: 70px;' value=0 ></p>"
+;
+        countBox += 1;
+      }
+            
+</script>
+
+     </body>
+
+</html>

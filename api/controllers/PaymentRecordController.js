@@ -7,7 +7,13 @@
 
 module.exports = {
   
-    
+  // json function
+  json: function (req, res) {
+    PaymentRecord.find().where({ uid : { contains: req.session.uid }}).exec(function (err, records) {
+        console.log(records)
+        return res.json(records);
+    });
+  },
 
 };
 

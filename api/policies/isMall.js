@@ -1,7 +1,7 @@
-// isAdmin.js
+// isMall.js
 module.exports = function (req, res, next) {
 
-    if (req.session.role == 'shop') {
+    if (req.session.role == 'mall') {
         return next(); //proceed to the next policy,
     }
 

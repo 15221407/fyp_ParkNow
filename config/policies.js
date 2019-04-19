@@ -34,7 +34,14 @@ module.exports.policies = {
    },
 
    CarparkController: {
-    parking: 'isCarpark'
+    parking: 'isCarpark',
+    exit: 'isCarpark',
+   },
+
+   RFIDTagController: {
+    registerTag: 'isCarpark',
+    registerTag: 'isAdmin',
+    registerTag: 'isMall'
    },
 
 

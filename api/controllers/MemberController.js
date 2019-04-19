@@ -54,10 +54,13 @@ module.exports = {
             }else{
                 var QRCode = require('qrcode');
                 var datetime = new Date();
-                console.log(member.uid)
-                QRCode.toDataURL(member.uid + ';' + datetime, function (err, url) {
-                    return res.send(url);
-                });
+                if (member.uid == null){
+                    return res.send("No such user");
+                }else{
+                    QRCode.toDataURL(member.uid + ';' + datetime, function (err, url) {
+                        return res.send(url);
+                    });
+            }
             }
         });
     },
@@ -78,20 +81,7 @@ module.exports = {
             return res.send("saved");
         });
     },
- 
 
-    showShoppingRecord: function (req, res) {
-        PointRecord.find().where({ userId : { contains: req.session.uid }}).exec( function (err,records ) {
-          return res.json(records);
-        
-        });
-    },
-
-    showParkingRecord: function (req, res) {
-        ParkingRecord.find().where({ uid : { contains: req.session.uid }}).exec( function (err,records ) {
-          return res.json(records);
-        });
-    }
 
 };
 
