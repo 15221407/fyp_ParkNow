@@ -1,0 +1,131 @@
+<!--create.ejs-->
+<form action="/offer/create" method="POST" onsubmit="return submitForm(this);">
+    <div class="row">
+    <div class="col-xs-12 col-sm-12">
+        <div class="form-group">
+            <P style="display: inline-block;">Carpark ID:</P>
+            <input disabled type="text" id="carparkId" class="form-control"  style="width: 150px;" value='<%=carpark.carparkId%>' name="Offer[carparkId]">
+
+            <P><label>Charge (weekday): $<%=carpark.chargeOnWeekday%></label></P>
+            <P><label>Charge (weekends): $<%=carpark.chargeOnWeekends%></label></P>
+            <p><b><label>New Offer</label></b><p>
+            <select required type="text" id="weekDay" class="form-control" style="display: inline-block; width: 100px;" value='Sun' name="Offer[day]"></select>
+            <select required type="text" id="startTime" class="form-control" style="display: inline-block; width: 100px;" value='00:00' name="Offer[startTime]"></select> to
+            <select required type="text" id="endTime" class="form-control" style="display: inline-block; width: 100px;" value='01:00' name="Offer[endTime]"></select> 
+            $<input required type="number" required id='fee'  class="form-control" style="display: inline-block; width: 70px;" value=0 name="Offer[charge]">
+            <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+    </div>
+</div>
+</form>
+
+<!--index.ejs-->
+<div class="container">
+    <table class="table table-striped">
+        <tr>
+                <td><a class="nav-link"><b>ID</b</td>
+            <td>
+                <a class="nav-link"><b>Day</b></a>
+            </td>
+
+
+            <td>
+                <a class="nav-link"><b>Duration</b></a>
+            </td>
+
+            <td>
+                <a class="nav-link"><b>Price</b>
+                </a>
+            </td>
+        
+            <td></td>
+            <td></td>
+            
+        <% offers.forEach( function(model) { %>
+            <tr>
+                <td><a class="nav-link"><%= model.id%></a></td>
+                
+                <td><a class="nav-link"><%= model.day%></a></td>
+
+                <td>
+                    <a class="nav-link"><%= model.startTime%> to <%= model.endTime%></a>
+                </td>
+                <td>
+                    <a class="nav-link">$<%= model.charge%></a>
+                </td>
+                <td> </td>
+
+                <td>
+                    <button onclick="deleteItem('<%=model.id%>');">Delete</button>
+                </td>
+        <% }); %>
+</div>
+
+<script>
+    function submitForm(oFormElement) {
+        var customFormData = "";
+        Object.keys(oFormElement).forEach(function (data) {
+            customFormData += encodeURI(oFormElement[data].name) + "=" + encodeURI(oFormElement[data].value) + "&";
+        })
+
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            if (xhr.responseText == "Offer added") {
+                alert(xhr.responseText);
+                location.reload(true);
+            }
+            else {
+                alert(xhr.responseText);
+            }
+        }
+
+        xhr.open(oFormElement.method, oFormElement.action, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send(customFormData + "a");
+        return false;
+    }
+
+    function deleteItem(offerId) {
+     var carparkId = document.getElementById("carparkId").value 
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "/offer/delete/"+offerId, true);
+      xhr.onload = function () {
+        if (xhr.responseText == "Offer deleted") {
+            alert(xhr.responseText);
+            location.reload(true);
+        }
+        else {
+          alert(xhr.responseText);
+        }
+      }
+      xhr.send();
+    }
+
+    var weekdaysShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    var weekDay = document.getElementById("weekDay");
+    for (item of weekdaysShort) {
+        var option = document.createElement("option");
+        option.text = item;
+        option.value = item;
+        weekDay.add(option)
+    }
+
+    var time = ['00:00:00', '01:00:00', '02:00:00', '03:00:00', '04:00:00', '05:00:00', '06:00:00', '07:00:00', '08:00:00','09:00:00', '10:00:00', '12:00:00', '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00', '18:00:00', '19:00:00', '20:00:00', '21:00:00', '22:00:00', '23:00:00', '24:00:00'];
+
+    var startTime= document.getElementById("startTime");
+      for (item of time) {
+        var option = document.createElement("option");
+        option.text = item;
+        option.value = item;
+        startTime.add(option)
+      }
+
+      var endTime= document.getElementById("endTime");
+      for (item of time) {
+        var option = document.createElement("option");
+        option.text = item;
+        option.value = item;
+        endTime.add(option)
+      }
+
+</script>

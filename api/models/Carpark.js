@@ -43,17 +43,25 @@ module.exports = {
       type: 'decimal'
     },
 
-    parkingFee: {
+    chargeOnWeekday: {
       type: 'integer'
     },
 
-    peakHourFee: {
+    chargeOnWeekends: {
       type: 'integer'
     },
 
-    parkingCharge: {
+    // peakHourFee: {
+    //   type: 'integer'
+    // },
+
+    // parkingCharge: {
+    //   type: 'integer'
+    // },
+
+    offer:{
       type: 'string'
-    },
+    }
     
   },
 

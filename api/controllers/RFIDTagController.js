@@ -67,11 +67,12 @@ module.exports = {
 
     //get location of car
     getLocation: function(req,res){
-        if( req.method == GET){
-            RFIDTag.findOne({ licensePlate: req.params.id }).exec(function(err,tag){
+        if( req.method == 'POST' ){
+            RFIDTag.findOne({ licensePlate: req.body.licensePlate }).exec(function(err,tag){
                 if( tag == null){
                     return res.send("Please register a tag first.")
                 }else{
+                    console.log(tag.location)
                     return res.send(tag.location);
                 }
             })

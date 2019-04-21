@@ -4,51 +4,36 @@
     
         <table class="table table-striped">
             <tr>
-                <td>
-                    <a class="nav-link">
-                        <b>Carpark ID</b>
-                    </a>
-                    </td>
-              
+                <td><a class="nav-link"><b>Carpark ID</b></a></td>
+                
+                <td><a class="nav-link"><b>Mall</b></a></td>
     
-                <td>
-                    <a class="nav-link">
-                        <b>Carpark Name</b>
-                    </a>
-                </td>
-    
-    
-                <td>
-                    <a class="nav-link">
-                        <b>lots</b>
-                    </a>
-                </td>
+                <td><a class="nav-link" ><b>Carpark</b></a></td>
 
-                <td></td>
+                <td><a class="nav-link"><b>lots</b></a></td>
+
                 <td></td>
                 <td></td>
              
                 <% carparks.forEach( function(model) { %>
+            
                     <tr>
                         <td>
-                            <a class="nav-link">
-                                <%= model.carparkId %>
-                            </a>
+                            <a class="nav-link"><%= model.carparkId%></a>
+                        </td>
+
+                        <td>
+                            <a class="nav-link"><%= model.mallName%></a>
                         </td>
     
                         <td>
-                                <a class="nav-link">
-                                    <%= model.carparkName%>
-                                </a>
+                            <a class="nav-link" href="/offer/index/<%= model.carparkId%>"><%= model.carparkName%></a>
                             </td>
     
                         <td>
-                            <a class="nav-item nav-link">
-                                <%= model.lots%>
-                            </a>
+                            <a class="nav-item nav-link"><%= model.lots%></a>
                         </td>
 
-                        <td></td>
                         <td>
                                 <a class="nav-item nav-link" href="edit/<%= model.id %>">Delete</a>
                         </td>

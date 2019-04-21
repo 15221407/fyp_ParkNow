@@ -1,0 +1,116 @@
+<!--create.ejs-->
+<html>
+
+    <body>
+<form action="/carpark/edit/<%=carpark.id %>"" method="POST" onsubmit="return submitForm(this);">
+    <div class="row">
+     <div class="col-xs-4 col-sm-6">
+         <div class="form-group">
+            <p><b><label>Update Car Park info</label></b></p>
+                
+            <label>Carpark Name</label>
+            <input required type="text" class="form-control" name="Carpark[carparkName]" value="<%=carpark.carparkName%>" onsubmit="return submitForm(this);">
+        
+            <label>Lots</label>
+            <input  required type="number" class="form-control" name="Carpark[lots]" value="<%=carpark.lots%>">
+
+            <label>Latitude</label>
+            <input required type="number" step="any" class="form-control" name="Carpark[latitude]"  value="<%=carpark.latitude%>">
+
+            <label>Longitude</label>
+            <input required type="number" step="any" class="form-control" name="Carpark[longitude]" value="<%=carpark.longitude%>">
+
+        </div>
+    </div>
+   
+
+    <div class="col-xs-4 col-sm-6">  
+        <div class="form-group">
+            <label>Charge on Weekday</label>
+            <input type="number" class="form-control" name="Carpark[chargeOnWeekday]" value="<%=carpark.chargeOnWeekday%>">
+
+            <label>Charge on Weekends</label>
+            <input type="number" class="form-control" name="Carpark[chargeOnWeekends]" value="<%=carpark.chargeOnWeekends%>">
+        
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<script type="text/javascript">
+    var offer = [];
+    document.getElementById("demo").innerHTML = offer;
+
+    function myFunction() {
+
+    offer.push("Kiwi");
+    document.getElementById("demo").innerHTML = offer;
+    }
+
+  var weekdaysShort = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var time = ['00:00', '01:00', '02:00', '03:00', '04:00', '05:00', '06:00', '07:00', '08:00','09:00', '10:00'];
+
+
+    var weekDay = document.getElementById("weekDay");
+      for (item of weekdaysShort) {
+        var option = document.createElement("option");
+        option.text = item;
+        option.value = item;
+        weekDay.add(option)
+      }
+
+      var startTime= document.getElementById("startTime");
+      for (item of time) {
+        var option = document.createElement("option");
+        option.text = item;
+        option.value = item;
+        startTime.add(option)
+      }
+
+      var endTime= document.getElementById("endTime");
+      for (item of time) {
+        var option = document.createElement("option");
+        option.text = item;
+        option.value = item;
+        endTime.add(option)
+      }
+
+      var countBox = 1;
+      var boxName = 0;
+      function addInput(){
+        var boxName="textBox"+countBox; 
+        document.getElementById('responce').innerHTML+="<p><select required type='text' id='weekDay' class='form-control' style='display: inline-block; width: 70px;' value='Sun' name='Carpark[offer"+countBox+"][day]'></select> "+
+                "<select required type='text' id='startTime' class='form-control' style='display: inline-block; width: 100px;' value='00:00' name='Carpark[offer"+countBox+"][sTime]'></select> "+
+                "<select required type='text' id='endTime' class='form-control' style='display: inline-block; width: 100px;' value='01:00' name='Carpark[offer"+countBox+"][eTime]'></select>"+
+                  "<input id='fee' type='number' class='form-control' style='display: inline-block; width: 70px;' value=0  name='Carpark[offer"+countBox+"]][price]'></p>";
+        countBox += 1;
+      }
+
+      function submitForm(oFormElement) {
+                var customFormData = "";
+                Object.keys(oFormElement).forEach(function (data) {
+                    customFormData += encodeURI(oFormElement[data].name) + "=" + encodeURI(oFormElement[data].value) + "&";
+                })
+
+                var xhr = new XMLHttpRequest();
+                xhr.onload = function () {
+                    if (xhr.responseText == "updated successfully") {
+                        alert(xhr.responseText);
+                        location.reload(true);
+                    }
+                    else {
+                        alert(xhr.responseText);
+                    }
+                }
+
+                xhr.open(oFormElement.method, oFormElement.action, true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.send(customFormData + "a");
+                return false;
+            }
+</script>
+
+     </body>
+
+</html>

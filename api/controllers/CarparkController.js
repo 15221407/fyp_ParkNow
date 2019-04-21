@@ -13,15 +13,29 @@ module.exports = {
         });
     },
 
-    index: function (req, res) {        
+    index: function (req, res) {     
         Carpark.find().where({ mallId : { contains: req.session.uid }}).exec(function (err, carpark) {
+            return res.view('carpark/index', { 'carparks': carpark });
+        });
+    },
+
+    index2: function (req, res) {     
+        Carpark.find().where({ mallId : { contains: req.params.id }}).exec(function (err, carpark) {
+            return res.view('carpark/index', { 'carparks': carpark });
+        });
+    },
+
+    index3: function (req, res) {     
+        Carpark.find().exec(function (err, carpark) {
             return res.view('carpark/index', { 'carparks': carpark });
         });
     },
 
     create: function(req, res){
         if (req.method == "GET"){
+            Mall.findOne({mallId : req.session.uid}).exec(function (err, malls){
             return res.view('carpark/create');
+            })
         }else{
             Carpark.create(req.body.Carpark).exec(function (err, carpark) {
                 User.create(req.body.User).exec(function (err, user) {
@@ -41,7 +55,28 @@ module.exports = {
         }
     },
 
-
+    // update function
+    edit: function (req, res) {
+        if (req.method == "GET") {
+            Carpark.findOne(req.params.id).exec(function (err, carpark) {
+                if (carpark == null)
+                    return res.send("No such person!");
+                else
+                    return res.view('carpark/edit', { 'carpark': carpark });
+            });
+        } else {
+            Carpark.findOne(req.params.id).exec(function (err, carpark) {
+                carpark.carparkName = req.body.Carpark.carparkName;
+                carpark.lots = req.body.Carpark.lots;
+                carpark.latitude = req.body.Carpark.latitude;
+                carpark.longitude = req.body.Carpark.longitude;
+                carpark.chargeOnWeekends = req.body.Carpark.chargeOnWeekends;
+                carpark.chargeOnWeekday = req.body.Carpark.chargeOnWeekday;
+                carpark.save();
+                return res.send("updated successfully");
+        });
+    }
+    },
 
 
     push: function (userId, message ) {
@@ -107,7 +142,7 @@ module.exports = {
                                 ParkingRecord.create().exec(function (err,parking) {
                                     RFIDTag.findOne({uid : parking.uid}).exec(function(err,tag){
                                         if( tag != null){
-                                            tag.location = 'none';
+                                            tag.location = 'entrance';
                                             tag.save();
                                         } 
                                     })
@@ -168,7 +203,7 @@ module.exports = {
                                         parking.state = "leave";
                                         RFIDTag.findOne({uid : parking.uid}).exec(function(err,tag){
                                             if( tag != null){
-                                                tag.location = 'none';
+                                                tag.location = 'entrance';
                                                 tag.save();
                                             } 
                                             parking.save();

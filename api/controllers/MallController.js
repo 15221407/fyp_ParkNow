@@ -25,7 +25,7 @@ module.exports = {
                             user.role = 'mall';
                             mall.save();
                             user.save();
-                            res.send("Created.")
+                            res.send("create successfully")
                             });
                         });
                 }else{

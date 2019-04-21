@@ -1,5 +1,5 @@
 <!--create.ejs-->
-<form action="/mall/create" method="POST">
+<form action="/mall/create" method="POST" onsubmit="return submitForm(this);">
     <div class="row">
     <div class="col-xs-6 col-sm-6">
         <div class="form-group">
@@ -7,30 +7,30 @@
             <select required  class="form-control" name="Mall[district]">
                 <option value="">Please select one:</option>
                 <option value="Kowloon">Kowloon</option>
-                <option value="HK Island">HK Island</option>
+                <option value="Hong Kong Island">Hong Kong Island</option>
                 <option value="New Territories">New Territories</option>
             </select>
       
             <label>Shopping Mall</label>
-            <input type="text" class="form-control" name="Mall[mallName]">
+            <input required type="text" class="form-control" name="Mall[mallName]">
 
             <label>Address</label>
-            <input type="text" class="form-control" name="Mall[address]">
+            <input required type="text" class="form-control" name="Mall[address]">
 
             <label>Contact</label>
-            <input type="text" class="form-control" name="Mall[contact]">
+            <input required type="text" class="form-control" name="Mall[contact]">
 
             <label>Latitude</label>
-            <input type="text" class="form-control" name="Mall[latitude]">
+            <input required type="text" class="form-control" name="Mall[latitude]">
 
             <label>Longitude</label>
-            <input type="text" class="form-control" name="Mall[longitude]">
+            <input required type="text" class="form-control" name="Mall[longitude]">
 
             <label>Details</label>
-            <textarea rows="4" type="text" class="form-control" name="Mall[detail]"></textarea>
+            <textarea required rows="4" type="text" class="form-control" name="Mall[detail]"></textarea>
 
             <label>Poster</label>
-             <input type="text" class="form-control" name="Mall[poster]">
+             <input required type="text" class="form-control" name="Mall[poster]">
         </div>
     </div>
 
@@ -48,3 +48,28 @@
     </div>
 </div>
 </form>
+
+<script>
+    function submitForm(oFormElement) {
+        var customFormData = "";
+        Object.keys(oFormElement).forEach(function (data) {
+            customFormData += encodeURI(oFormElement[data].name) + "=" + encodeURI(oFormElement[data].value) + "&";
+        })
+
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            if (xhr.responseText == "create successfully") {
+                alert(xhr.responseText);
+                location.reload(true);
+            }
+            else {
+                alert(xhr.responseText);
+            }
+        }
+
+        xhr.open(oFormElement.method, oFormElement.action, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send(customFormData + "a");
+        return false;
+    }
+</script>

@@ -1,34 +1,16 @@
 <!--index.ejs-->
 <div class="container">
-        <td><button class="btn btn-primary"  onclick="javascript:location.href='/user/home'" > Back to Admin Homepage</button> </td>
         <tr> <button class="btn btn-primary"  onclick="javascript:location.href='/mall/create'" > Add A New Shooping Mall</button></tr>
     
         <table class="table table-striped">
             <tr>
-                <td>
-                    <a class="nav-link">
-                        <b>Mall ID</b>
-                    </a>
-                    </td>
+                <td><a class="nav-link"><b>Mall ID</b></a></td>
               
-    
-                <td>
-                        <a class="nav-link">
-                            <b>District</b>
-                        </a>
-                    </td>
-    
-    
-                <td>
-                    <a class="nav-link">
-                        <b>Mall</b>
-                    </a>
-                </td>
-                <td>
-                    <a class="nav-link">
-                        <b>Address</b>
-                    </a>
-                </td>
+                <td><a class="nav-link"><b>District</b></a></td>
+ 
+                <td><a class="nav-link"><b>Mall</b></a></td>
+                
+                <td><a class="nav-link"><b>Address</b></a></td>
            
                 <td></td>
                 <td></td>
@@ -36,34 +18,28 @@
                 <% malls.forEach( function(model) { %>
                     <tr>
                         <td>
-                            <a class="nav-link">
-                                <%= model.mallId %>
-                            </a>
+                            <a class="nav-link"><%= model.mallId %></a>
                         </td>
     
                         <td>
-                                <a class="nav-link">
-                                    <%= model.district%>
-                                </a>
-                            </td>
+                             <a class="nav-link"><%= model.district%></a>
+                        </td>
     
                         <td>
-                            <a class="nav-link">
-                                <%= model.mallName%>
-                            </a>
+                            <a class="nav-link"><%= model.mallName%></a>
                         </td>
+
                         <td>
-                            <a class="nav-link">
-                                <%= model.address%> 
-                            </a>
+                            <a class="nav-link"><%= model.address%></a>
                         </td>
-                        <td> </td>
+
+                        <td>
+                            <a class="nav-item nav-link" href="/carpark/index2/<%= model.mallId%>">Carpark</a>
+                        </td>
     
                         <td>
                             <a class="nav-item nav-link" href="edit/<%= model.id %>">Edit</a>
                         </td>
-    
-                       
                     
                         <% }); %>
     </div>

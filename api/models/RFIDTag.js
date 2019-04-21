@@ -25,8 +25,8 @@ module.exports = {
 
     location:{
       type: 'string',
-      enum: ['none', 'zoneB' , 'zoneA'],
-      defaultsTo: 'none'
+      enum: ['entrance', 'zoneB' , 'zoneA'],
+      defaultsTo: 'entrance'
     }
 
   },
