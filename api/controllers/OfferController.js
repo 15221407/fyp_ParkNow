@@ -8,7 +8,7 @@
 module.exports = {
   // json function
     json: function (req, res) {
-        Offer.find().exec(function (err, offers) {
+        Offer.find().where({ carparkId: { contains: req.body.carpark }}).exec(function (err, offers) {
             return res.json(offers);
         });
     },

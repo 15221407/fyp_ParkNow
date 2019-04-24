@@ -5,56 +5,50 @@
         <table class="table table-striped">
             <tr>
                 <td>
-                    <a class="nav-link">
-                        <b>Shop ID</b>
-                    </a>
-                    </td>
+                    <a class="nav-link"><b>Shop ID</b> </a>
+                </td>
               
+                <td>
+                        <a class="nav-link">
+                            <b>Mall</b>
+                        </a>
+                    </td>
     
                 <td>
-                    <a class="nav-link">
-                        <b>Shop No</b>
-                    </a>
+                    <a class="nav-link"><b>Shop No</b></a>
                 </td>
     
     
                 <td>
-                    <a class="nav-link">
-                        <b>Shop Name</b>
-                    </a>
+                    <a class="nav-link"><b>Shop Name</b></a>
                 </td>
 
-                <td></td>
                 <td></td>
                 <td></td>
              
                 <% shops.forEach( function(model) { %>
                     <tr>
                         <td>
-                            <a class="nav-link">
-                                <%= model.id %>
-                            </a>
-                        </td>
-    
-                        <td>
-                                <a class="nav-link">
-                                    <%= model.shopNo%>
-                                </a>
-                            </td>
-    
-                        <td>
-                            <a class="nav-item nav-link" href="detail/<%= model.id %>">
-                                <%= model.shopName%>
-                            </a>
+                            <a class="nav-link"><%= model.id %></a>
                         </td>
 
-                        <td></td>
                         <td>
-                                <a class="nav-item nav-link" href="edit/<%= model.id %>">Delete</a>
+                            <a class="nav-item nav-link"><%= model.mallName%></a>
                         </td>
     
                         <td>
-                            <a class="nav-item nav-link" href="edit/<%= model.id %>">Edit</a>
+                            <a class="nav-link"><%= model.shopNo%></a>
+                        </td>
+    
+                        <td>
+                            <a class="nav-item nav-link"><%= model.shopName%></a>
+                        </td>
+
+                        <td>
+                            <button onclick="deleteItem('<%=model.shopId%>');">Delete</button>
+                        </td>
+    
+                        <td>
                         </td>
     
                        
@@ -63,5 +57,23 @@
     </div>
     
     <script>
+
+    function deleteItem(shopId) {
+    var r = confirm("Confirm Delete?");
+    if (r == true) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/shop/delete/"+shopId, true);
+        xhr.onload = function () {
+            if (xhr.responseText == "Deleted") {
+                alert(xhr.responseText);
+                location.reload(true);
+            }else {
+                alert(xhr.responseText);
+                }
+        }
+        xhr.send();
+    }
+    
+    }
           
     </script>

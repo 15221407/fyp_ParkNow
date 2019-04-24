@@ -1,6 +1,6 @@
 
 <!--create.ejs-->
-<form action="/shop/create" method="POST">
+<form action="/shop/create" method="POST" onsubmit="return submitForm(this);">
     <div class="row">
      <div class="col-xs-4 col-sm-6">
          <div class="form-group">
@@ -38,9 +38,27 @@
 
 <script type="text/javascript">
 
-    window.onload = function () {
-        $('#datepicker').datepicker({
-            format: 'mm/dd/yyyy'
-        });
+function submitForm(oFormElement) {
+        var customFormData = "";
+        Object.keys(oFormElement).forEach(function (data) {
+            customFormData += encodeURI(oFormElement[data].name) + "=" + encodeURI(oFormElement[data].value) + "&";
+        })
+
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            if (xhr.responseText == "create successfully") {
+                alert(xhr.responseText);
+                // location.reload("/shop/index");
+                window.location = "/shop/index";
+            }
+            else {
+                alert(xhr.responseText);
+            }
+        }
+
+        xhr.open(oFormElement.method, oFormElement.action, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send(customFormData + "a");
+        return false;
     }
     </script>

@@ -40,9 +40,9 @@ module.exports = {
       type: 'decimal'
     },
 
-    detail: {
-      type: 'string'
-    },
+    // detail: {
+    //   type: 'string'
+    // },
 
     poster: {
       type: 'string'

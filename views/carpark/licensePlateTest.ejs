@@ -8,6 +8,8 @@
     </head>
 
     <body>
+            <p id="msg"></p>
+
             <video id="video" width="320" height="240" autoplay></video>
             <canvas id="canvas" width="320" height="240"></canvas>
         License Plate: <p id="response"></p><br>
@@ -15,6 +17,7 @@
 
 
     <script>
+    // document.getElementById("msg").innerHTML = "No message" ;
     // Grab elements, create settings, etc.
     var video = document.getElementById('video');
     // Get access to the camera!
@@ -76,15 +79,28 @@
     function enterCarPark(plate){
         console.log(plate);
         var xhr = new XMLHttpRequest();
-        xhr.onload = function(){
-            if (xhr.responseText == "login successfully.") {
-                window.location = "/";
+        // xhr.onload = function(){
+        //     if (xhr.responseText == "login successfully.") {
+        //         window.location = "/";
+        //     }
+        //     else {
+        //         alert (xhr.responseText);
+        //     } 
+        // }
+
+        xhr.onload = function () {
+            var msg = document.getElementById("msg");   // Get the element with id="demo"
+            msg.style.color = "red"; 
+            if (xhr.responseText == "This car entered") {
+                document.getElementById("msg").innerHTML = "This car " + plate + " entered" ;
             }
-            else {
-                alert (xhr.responseText);
-            } 
+            else if(xhr.responseText == "This car leaved"){
+                document.getElementById("msg").innerHTML = "This car " + plate + " leaved" ;
+            }else{
+                document.getElementById("msg").innerHTML = xhr.responseText ;
+            }
         }
-        console.log(document.getElementById("action").innerHTML)
+
         if( document.getElementById("action").innerHTML == 'leave'){
             xhr.open('POST', "/CarPark/exit/" + plate , true);
         }else if( document.getElementById("action").innerHTML == 'enter'){

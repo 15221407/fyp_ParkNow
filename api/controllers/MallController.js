@@ -19,7 +19,7 @@ module.exports = {
                 if (model == null){
                     Mall.create(req.body.Mall).exec(function (err, mall){
                         User.create(req.body.User).exec(function (err, user) {
-                            console.log(user.id);
+                            // console.log(user.id);
                             mall.mallId = 'MA' + user.id ;
                             user.uid = 'MA' + user.id ;
                             user.role = 'mall';

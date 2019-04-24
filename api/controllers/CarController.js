@@ -40,8 +40,14 @@ module.exports = {
                 if(car == null){
                         return res.send("The car is not exist.");
                 }else{
-                        car.destroy();
-                        return res.send("Successfully Removed.")
+                        ParkingRecord.findOne({uid:req.session.uid , licensePlate : req.body.licensePlate,state:'enter'}).exec(function(err,parking){
+                                if( parking == null){
+                                car.destroy();
+                                        return res.send("Successfully Removed.")
+                                }else{
+                                        return res.send("Fail to remove: Your car is at carpark")     
+                                }
+                        })
                 }
         });
 

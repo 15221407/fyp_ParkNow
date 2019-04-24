@@ -49,7 +49,7 @@ module.exports = {
 
     state:{
       type:'string',
-      enum: ['enter', 'leave'],
+      enum: ['enter', 'leave','overtime'],
       defaultsTo: 'enter'
     },
 

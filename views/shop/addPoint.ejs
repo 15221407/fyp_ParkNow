@@ -1,6 +1,6 @@
 <html>
     <head>
-         <form action="/shop/addPoint" method="POST">
+         <form action="/shop/addPoint" method="POST"  onsubmit="return submitForm(this);">
         <b><titile>QR code Scanner</titile></b>
         <script type="text/javascript" src="https://rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
         </head>
@@ -16,13 +16,13 @@
                 <div class="form-group">
 
                         <label>Shopping Mall: </label>
-                        <input required type="text" class="form-control" name="Shopping[mallName]" value="<%=mallName%>">
+                        <input disabled required type="text" class="form-control" name="Shopping[mallName]" value="<%=mallName%>">
 
                         <label>Shop ID: </label>
-                        <input required type="text" class="form-control" name="Shopping[shopId]" value="<%=shopuid%>">
+                        <input disabled required type="text" class="form-control" name="Shopping[shopId]" value="<%=shopuid%>">
 
                         <label> ShopName: </label>
-                        <input required type="text" class="form-control" name="Shopping[shopName]" value="<%=shopName%>">
+                        <input disabled required type="text" class="form-control" name="Shopping[shopName]" value="<%=shopName%>">
 
 
                     <label>User ID: </label>
@@ -45,17 +45,30 @@
 
             <script>
 
-            function submitForm(oFormElement) {
-                var xhr = new XMLHttpRequest();
-                xhr.onload = function () {
-                    if (xhr.responseText != null) {
-                        alert(xhr.responseText);
-                     }
-                xhr.open(oFormElement.method, oFormElement.action, true);
-                xhr.send(new FormData(oFormElement));
-                return false;
-                }
-             }       
+    function submitForm(oFormElement) {
+        var customFormData = "";
+        Object.keys(oFormElement).forEach(function (data) {
+            customFormData += encodeURI(oFormElement[data].name) + "=" + encodeURI(oFormElement[data].value) + "&";
+        })
+
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            if (xhr.responseText == "Added") {
+                alert(xhr.responseText);
+                location.reload(true);
+                // window.location = "/shop/index";
+            }
+            else {
+                alert(xhr.responseText);
+                location.reload(true);
+            }
+        }
+
+        xhr.open(oFormElement.method, oFormElement.action, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send(customFormData + "a");
+        return false;
+    }    
 
             let scanner = new Instascan.Scanner(
             {

@@ -35,7 +35,7 @@
                         </td>
 
                         <td>
-                                <a class="nav-item nav-link" href="edit/<%= model.id %>">Delete</a>
+                                <button onclick="deleteItem('<%=model.carparkId%>');">Delete</button>
                         </td>
     
                         <td>
@@ -46,7 +46,40 @@
                     
                         <% }); %>
     </div>
-    
+     
     <script>
-          
+    function deleteItem(carparkId) {
+    
+    var r = confirm("Confirm Delete?");
+    if (r == true) {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "/carpark/delete/"+carparkId, true);
+        xhr.onload = function () {
+            if (xhr.responseText == "Deleted") {
+                alert(xhr.responseText);
+                location.reload(true);
+            }else {
+                alert(xhr.responseText);
+                }
+        }
+        xhr.send();
+    }
+    
+    }
+
+    //           function deleteItem(carparkId) {
+    // //  var carparkId = document.getElementById("carparkId").value 
+    //   var xhr = new XMLHttpRequest();
+    //   xhr.open("GET", "/carpark/delete/"+carparkId, true);
+    //   xhr.onload = function () {
+    //     if (xhr.responseText == "Deleted") {
+    //         alert(xhr.responseText);
+    //         location.reload(true);
+    //     }
+    //     else {
+    //       alert(xhr.responseText);
+    //     }
+    //   }
+    //   xhr.send();
+    // }
     </script>

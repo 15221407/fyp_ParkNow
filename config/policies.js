@@ -30,12 +30,18 @@ module.exports.policies = {
    },
 
    ShopController: {
-    addPoint: 'isShop'
+    addPoint: 'isShop',
+    create:'isMall',
+    edit:'isMall',
+    index:'isMall'
    },
 
    CarparkController: {
+    create: 'isMall',
+    edit:'isMall',
     parking: 'isCarpark',
     exit: 'isCarpark',
+    index: 'isMall'
    },
 
    RFIDTagController: {
@@ -45,9 +51,10 @@ module.exports.policies = {
    },
 
 
-  //  MemberController: {
-  //   getPoint: 'isMember'
-  //  }
+   MemberController: {
+     index:'isAdmin'
+    // getPoint: 'isMember'
+   }
 
   /***************************************************************************
   *                                                                          *

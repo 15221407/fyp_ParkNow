@@ -48,6 +48,9 @@
           <li class="nav-item">
               <a class="nav-item nav-link <%=req.path=='/user/index' ? 'active':''%>" href="/user/index">Manage User</a>
           </li>
+          <li class="nav-item">
+              <a class="nav-item nav-link <%=req.path=='/member/index' ? 'active':''%>" href="/member/index">Manage Member</a>
+          </li>
           <% }else if (req.session.role == 'mall') { %>
           <li class="nav-item">
             <a class="nav-item nav-link <%=req.path=='/carpark/index' ? 'active':''%>" href="/carpark/index">Manage CarPark</a>
@@ -55,9 +58,7 @@
           <li class="nav-item">
               <a class="nav-item nav-link <%=req.path=='/shop/index' ? 'active':''%>" href="/shop/index">Manage Shop</a>
             </li>
-          <li class="nav-item">
-              <a class="nav-item nav-link <%=req.path=='/member/index' ? 'active':''%>" href="/member/index">Manage Member</a>
-          </li>
+ 
           <li class="nav-item">
               <a class="nav-item nav-link <%=req.path=='/RFIDTag/registerTag' ? 'active':''%>" href="/RFIDTag/registerTag">Register</a>
           </li>
@@ -77,13 +78,13 @@
       </div>
 
       <ul class="navbar-nav navbar-right ml-auto">
-          <% if (req.session.role != 'admin'  && req.session.role != 'user' && req.session.role != 'shop' ) { %>
+          <% if (req.session.role == 'visitor') { %>
             <a class="nav-link" href="/user/login">Login</a>
             <% } else { %>
               <span class="nav-link navbar-text">
                 Hi,
-                <%= req.session.username %>! (
-                  <a onclick="Logout();">logout</a>)</span>
+                <%= req.session.username %>! 
+                  <a onclick="Logout();"><button>logout</a></button></span>
               <% } %>
         </ul>
 
@@ -159,7 +160,7 @@
       xhr.open("POST", "/user/logout", true);
       xhr.onload = function () {
         if (xhr.responseText == "Logout successfully") {
-          window.location = "/";
+          window.location = "/user/login";
         }
         else {
           alert(xhr.responseText);

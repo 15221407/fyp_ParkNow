@@ -8,8 +8,9 @@
 module.exports = {
 
     home: function (req, res) {
-        console.log(req.session.username);
-        return res.view('user/home');
+        User.findOne({ uid : req.session.uid}).exec(function(err ,user){
+            return res.view('user/home' , { 'user':user});
+        })
     },
     
     //Account Managment
@@ -65,10 +66,10 @@ module.exports = {
             User.findOne({ username: req.body.username }).exec(function (err, user) {
     
                 if (user == null || user.role == "member")
-                    return res.send("No such user");
+                    return res.send("Wrong Username/Password.");
     
                 if (user.password != req.body.password)
-                    return res.send("Wrong Password");
+                    return res.send("Wrong Username/Password.");
     
                     console.log("The session id " + req.session.id + " is going to be destroyed.");
     
@@ -78,8 +79,7 @@ module.exports = {
                     req.session.username = req.body.username;
                     req.session.role = user.role;
                     req.session.uid = user.uid;
-                    
-                    return res.view('user/home');
+                    return res.send("Logined");
                 });
             });
         }
@@ -113,7 +113,6 @@ module.exports = {
     },
 
     logout: function (req , res) {
-        console.log("logout")
         console.log("The current session id " + req.session.id + " is going to be destroyed.");
         if (req.session.role == 'member'){
             Member.findOne({ uid : req.session.uid}).exec(function (err, member) {
@@ -122,6 +121,10 @@ module.exports = {
                 req.session.destroy(function (err) {
                     return res.send("Logout successfully");
                 });
+            });
+        }else{
+            req.session.destroy(function (err) {
+                return res.send("Logout successfully");
             });
         }
     },

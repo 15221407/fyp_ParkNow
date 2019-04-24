@@ -1,11 +1,11 @@
 <html>
     <head>
-         <form action="/carpark/parking" method="POST">
+         <form action="/carpark/parking" method="POST" onsubmit="return submitForm(this);">
 
         <body>
         <div class="row">
                 <div class="col-xs-4 col-sm-8">
- 
+                        <p id="msg"></p>
                     </div>
 
             <div class="col-xs-4 col-sm-4">
@@ -29,5 +29,30 @@
         </body>
 
         <script>
+
+    function submitForm(oFormElement) {
+        var customFormData = "";
+        Object.keys(oFormElement).forEach(function (data) {
+            customFormData += encodeURI(oFormElement[data].name) + "=" + encodeURI(oFormElement[data].value) + "&";
+        })
+
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            if (xhr.responseText == "This car Entered") {
+                location.reload(true);
+                document.getElementById("msg").innerHTML = xhr.responseText ;
+                // alert(xhr.responseText);
+            }
+            else {
+                document.getElementById("msg").innerHTML = xhr.responseText ;
+                // alert(xhr.responseText);
+            }
+        }
+
+        xhr.open(oFormElement.method, oFormElement.action, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send(customFormData + "a");
+        return false;
+    }  
  </script>
     

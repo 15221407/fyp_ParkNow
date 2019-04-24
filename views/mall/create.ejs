@@ -4,7 +4,7 @@
     <div class="col-xs-6 col-sm-6">
         <div class="form-group">
             <label>District</label>
-            <select required  class="form-control" name="Mall[district]">
+            <select required  type="text" class="form-control" name="Mall[district]">
                 <option value="">Please select one:</option>
                 <option value="Kowloon">Kowloon</option>
                 <option value="Hong Kong Island">Hong Kong Island</option>
@@ -18,16 +18,15 @@
             <input required type="text" class="form-control" name="Mall[address]">
 
             <label>Contact</label>
-            <input required type="text" class="form-control" name="Mall[contact]">
+            <input required type="number" class="form-control" name="Mall[contact]">
 
             <label>Latitude</label>
-            <input required type="text" class="form-control" name="Mall[latitude]">
+            <input required type="number" step="any" class="form-control" name="Mall[latitude]">
 
             <label>Longitude</label>
-            <input required type="text" class="form-control" name="Mall[longitude]">
+            <input required  type="number" step="any" class="form-control" name="Mall[longitude]">
 
-            <label>Details</label>
-            <textarea required rows="4" type="text" class="form-control" name="Mall[detail]"></textarea>
+            <!-- <label>Details</label>åype="text" class="form-control" name="Mall[detail]"></textarea> -->
 
             <label>Poster</label>
              <input required type="text" class="form-control" name="Mall[poster]">
@@ -60,7 +59,8 @@
         xhr.onload = function () {
             if (xhr.responseText == "create successfully") {
                 alert(xhr.responseText);
-                location.reload(true);
+                // location.reload(true);
+                window.location = "/mall/index";
             }
             else {
                 alert(xhr.responseText);

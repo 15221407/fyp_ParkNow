@@ -59,9 +59,9 @@ module.exports = {
     //   type: 'integer'
     // },
 
-    offer:{
-      type: 'string'
-    }
+    // offer:{
+    //   type: 'string'
+    // }
     
   },
 

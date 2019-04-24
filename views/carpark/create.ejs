@@ -6,7 +6,7 @@
     </head>
 
     <body>
-<form action="/carpark/create" method="POST">
+<form action="/carpark/create" method="POST"  onsubmit="return submitForm(this);">
     <div class="row">
      <div class="col-xs-4 col-sm-6">
          <div class="form-group">
@@ -90,13 +90,29 @@
         countBox += 1;
       }
 
-    $('#timeformatExample1').timepicker({ 
-      'timeFormat': 'H:i:s' 
-    });
+      function submitForm(oFormElement) {
+        var customFormData = "";
+        Object.keys(oFormElement).forEach(function (data) {
+            customFormData += encodeURI(oFormElement[data].name) + "=" + encodeURI(oFormElement[data].value) + "&";
+        })
 
-    $('#timeformatExample2').timepicker({
-      'timeFormat': 'h:i A' 
-      });
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            if (xhr.responseText == "create successfully") {
+                alert(xhr.responseText);
+                // location.reload("/carpark/index");
+                window.location = "/carpark/index";
+            }
+            else {
+                alert(xhr.responseText);
+            }
+        }
+
+        xhr.open(oFormElement.method, oFormElement.action, true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send(customFormData + "a");
+        return false;
+    }
             
 </script>
 

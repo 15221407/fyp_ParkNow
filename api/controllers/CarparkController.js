@@ -13,6 +13,14 @@ module.exports = {
         });
     },
 
+    getCarpark: function (req, res) {
+        console.log(req.body.mallId)
+        Carpark.find().where({ mallId : { contains: req.body.mallId }}).exec(function (err, carparks) {
+            console.log(carparks)
+            return res.json(carparks);
+        });
+    },
+
     index: function (req, res) {     
         Carpark.find().where({ mallId : { contains: req.session.uid }}).exec(function (err, carpark) {
             return res.view('carpark/index', { 'carparks': carpark });
@@ -48,11 +56,31 @@ module.exports = {
                         user.role = 'carpark';
                         carpark.save();
                         user.save();
-                        res.send("Created.")
+                        res.send("create successfully")
                     });
                 });
             });
         }
+    },
+
+    delete: function(req,res){
+
+        User.findOne({ uid : req.params.id}).exec(function (err, user) {
+            if (user.role == 'carpark'){
+                Carpark.findOne({carparkId: user.uid}).exec(function(err,carpark){
+                    if(carpark != null){
+                        carpark.destroy();
+                        user.destroy();
+                        console.log("Carpark deleted: " + user.uid);
+                        return res.send('Deleted')
+                    }else{
+                        return res.send('Already Deleted')
+                    }
+                })
+            }else{
+                return res.send('Already deleted')
+            }
+        })
     },
 
     // update function
@@ -133,11 +161,17 @@ module.exports = {
                 Car.findOne({ licensePlate: req.params.id }).exec(function (err, car) {
                     if(car == null){
                         console.log("Cannot find this car");
+                        return res.send("Cannot find this car");
                     }else{
-                        ParkingRecord.findOne({ licensePlate: req.params.id, state:'enter' }).exec(function (err,record) {
-                            if (record != null){
-                                console.log("This car has entered");
-                                return;
+                        ParkingRecord.findOne({ uid: car.uid , state:'enter' }).exec(function (err,record) {
+                            if ( record != null){
+                                if(record.licensePlate == car.licensePlate ){
+                                    console.log("This car has entered");
+                                    return res.send("This car has entered already");
+                                }else{
+                                    console.log("You have another car parked");
+                                    return res.send("You have another car parked");
+                                }
                             }else{
                                 ParkingRecord.create().exec(function (err,parking) {
                                     RFIDTag.findOne({uid : parking.uid}).exec(function(err,tag){
@@ -157,9 +191,13 @@ module.exports = {
                                     parking.enterAt  = new Date().toString();
                                     parking.state  = 'enter';
                                     parking.save();
+                                    //update availabity
+                                    carpark.lots -= 1;
+                                    carpark.save();
                                     //push notification
                                     message = "Welcome to " + parking.mallName + "! You entered " +parking.carparkName;
                                     module.exports.push(car.uid, message);
+                                    return res.send("This car entered");
                                  });
 
                             }
@@ -167,7 +205,7 @@ module.exports = {
                     }
                 });
             });
-            return res.view('carpark/licensePlateTest', { 'action': 'enter'} )
+            // return res.view('carpark/licensePlateTest', { 'action': 'enter'} )
             }
     },  
     
@@ -184,13 +222,16 @@ module.exports = {
                 Car.findOne({ licensePlate: req.params.id }).exec(function (err, car) {
                     if(car == null){
                         console.log("Cannot find this car");
-                        // res.send("Cannot find this car");
-                    }else{
-                        ParkingRecord.findOne({ licensePlate: req.params.id, state:'enter'}).exec(function (err,parking) {
+                        return res.send("Cannot find this car");
+                    }
+                    else{
+                        ParkingRecord.findOne({ licensePlate: req.params.id, state:'enter', carparkId:req.session.uid }).exec(function (err,parking) {
                             if(parking == null){
-                                console.log("Error: This car has not entered carpark before.");
+                                console.log("This car has not entered carpark before.");
+                                return res.send("This car has not entered carpark before.");
                             }else if (parking.paid == "N"){
-                                console.log("Error: This car has not entered carpark before.");
+                                console.log("This member doesn't charge.");
+                                return res.send("This member doesn't charge.");
                             }else if (parking.paid == "Y"){
                                 PaymentRecord.findOne({ paymentOf : parking.parkingId }).exec(function(err,payment){
                                     var paidTime = new Date(payment.paidAt);
@@ -199,6 +240,12 @@ module.exports = {
                                     var mins = Math.ceil(diff/60000) ;
                                     console.log(mins); 
                                     if ( mins < 15 ){
+                                        if( parking.recordType == 'OT'){
+                                            ParkingRecord.findOne({ licensePlate: req.params.id, state:'overtime', carparkId:req.session.uid , recordType: 'NP'}).exec(function (err,parking2) {
+                                                parking2.leaveAt  = new Date().toString();
+                                                parking2.save()
+                                            })
+                                        }
                                         parking.leaveAt  = new Date().toString();
                                         parking.state = "leave";
                                         RFIDTag.findOne({uid : parking.uid}).exec(function(err,tag){
@@ -207,40 +254,48 @@ module.exports = {
                                                 tag.save();
                                             } 
                                             parking.save();
+                                            //update availabity
+                                            Carpark.findOne( { carparkId : req.session.uid }).exec(function (err, carpark) {
+                                            carpark.lots += 1;
+                                            carpark.save();
+                                            })
                                             //push notification
                                             message = "You leaved " + parking.mallName ;
                                             module.exports.push(car.uid, message);
+                                            return res.send("This car leaved");
                                         })
 
                                     }else {
-                                        ParkingRecord.create().exec(function (err,record) {
-                                            record.parkingId = "OT-" + record.id ; 
-                                            record.recordType = "OT" ; 
-                                            record.mallName = parking.mallName;
-                                            record.mallId = parking.mallId;
-                                            record.carparkId = parking.carparkId;
-                                            record.carparkName = parking.carparkName;
-                                            record.uid = car.uid;
-                                            record.licensePlate = req.params.id;
-                                            record.enterAt  = new Date().toString();
-                                            record.state  = 'enter';
-                                            record.save();
+                                        // ParkingRecord.create().exec(function (err,record) {
+                                        //     record.parkingId = "OT-" + record.id ; 
+                                        //     record.recordType = "OT" ; 
+                                        //     record.mallName = parking.mallName;
+                                        //     record.mallId = parking.mallId;
+                                        //     record.carparkId = parking.carparkId;
+                                        //     record.carparkName = parking.carparkName;
+                                        //     record.uid = car.uid;
+                                        //     record.licensePlate = req.params.id;
+                                        //     record.enterAt  = new Date().toString();
+                                        //     record.state  = 'enter';
+                                        //     record.save();
                                             //push notification
                                             message = "Please pay for overtime";
                                             module.exports.push(car.uid, message);
                                             console.log("Over 15 minutes");
-                                        })
+                                            return;
+                                        // })
                                     }
                                 });
                               
                             }else{
                                 console.log("Unpaid");
+                                return res.send("Not Charge");
                             }
                          });
                     }
                 });
             // });
-            return res.view('carpark/licensePlateTest', { 'action': 'leave'} )
+            // return res.view('carpark/licensePlateTest', { 'action': 'leave'} )
             }
     },
 

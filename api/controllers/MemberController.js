@@ -7,7 +7,7 @@
 
 module.exports = {
     index: function (req, res) {
-        Member.find().exec(function (err, member) {
+        Member.find().exec(function (err, members) {
             return res.view('member/index', { 'members': members });
         });
     },
