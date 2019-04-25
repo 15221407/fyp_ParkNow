@@ -9,6 +9,11 @@ module.exports = {
   // json function
     json: function (req, res) {
         Offer.find().where({ carparkId: { contains: req.body.carpark }}).exec(function (err, offers) {
+            var offerStr;
+            offers = offers.sort(function (a, b) {
+                return a.dateIndex > b.dateIndex ? 1 : -1;
+               });
+            console.log(offers)
             return res.json(offers);
         });
     },
